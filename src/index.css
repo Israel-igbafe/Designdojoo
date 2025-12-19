@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  .input {
+    @apply w-full border border-gray-300 rounded-lg px-4 py-3 text-sm
+    focus:outline-none focus:ring-2 focus:ring-red-500;
+  }
+
+  .section-title {
+    @apply text-sm font-semibold text-gray-900 mb-4;
+  }
+
+  .radio {
+    @apply flex items-center gap-3 text-sm text-gray-700;
+  }
+
+  .radio input {
+    @apply accent-red-600;
+  }
+}
