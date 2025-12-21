@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const RegistrationForm = () => {
+    const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
+    navigate("/confirmation");
   };
 
   return (
@@ -161,11 +165,12 @@ const RegistrationForm = () => {
           {/* Submit */}
           <button
   type="submit"
-  className="w-full bg-red-600 hover:bg-red-700 transition
-             text-white font-semibold py-4 rounded-lg"
+  onClick={() => navigate("/confirmation")}
+  className="bg-red-500 text-white px-6 py-3 rounded-lg"
 >
   Submit Application
 </button>
+
 
 
           <p className="text-xs text-gray-400 text-center">
