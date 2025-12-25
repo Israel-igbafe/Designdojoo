@@ -1,166 +1,175 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 function RegistrationForm() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const [form, setForm] = useState({
+    full_name: "",
+    email: "",
+    phone: "",
+    city: "",
+    country: "",
+    portfolio: "",
+    track: "",
+    referral: "",
+    blocker: "",
+    accountability: "",
+    commitment: ""
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const { error } = await supabase
+      .from("applications")
+      .insert([form]);
+
+    if (error) {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+      return;
+    }
+
     navigate("/confirmation");
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 flex justify-center">
-      <div className="w-full max-w-2xl bg-white rounded-xl shadow-sm px-6 py-8 md:px-10">
+    <form onSubmit={handleSubmit} className="space-y-6">
 
-        {/* Header */}
-        <div className="mb-8">
-          <div className="bg-black rounded-lg px-6 py-5">
-            <div className="flex items-center gap-2 text-red-500 text-xs mb-2">
-              ⏱ Takes 8 minutes
-            </div>
+      <input
+        name="full_name"
+        onChange={handleChange}
+        className="input"
+        placeholder="Full Name *"
+        required
+      />
 
-            <h1 className="text-white text-xl font-bold">
-              The DesignDojoo Product Launchpad
-            </h1>
+      <input
+        name="email"
+        onChange={handleChange}
+        className="input"
+        placeholder="Email Address *"
+        required
+      />
 
-            <p className="text-gray-300 text-sm mt-1">
-              Stop learning alone. Start building together.
-            </p>
-          </div>
-        </div>
+      <input
+        name="phone"
+        onChange={handleChange}
+        className="input"
+        placeholder="Phone Number *"
+        required
+      />
 
-        {/* Intro */}
-        <div className="text-sm text-gray-600 space-y-4 mb-10">
-          <p>
-            <strong>Welcome!</strong> We have <strong>limited scholarship spots</strong> for this
-            8-week cohort. This is a hands-on, high-intensity career accelerator.
-          </p>
+      <input
+        name="city"
+        onChange={handleChange}
+        className="input"
+        placeholder="City *"
+        required
+      />
 
-          <p>
-            We’re selecting designers and product managers ready to do the work
-            and launch their careers.
-          </p>
+      <input
+        name="country"
+        onChange={handleChange}
+        className="input"
+        placeholder="Country *"
+        required
+      />
 
-          <p>
-            <strong>Authenticity over perfection.</strong> Answer honestly.
-          </p>
-        </div>
+      <input
+        name="portfolio"
+        onChange={handleChange}
+        className="input"
+        placeholder="Portfolio / LinkedIn *"
+      />
 
-        <form onSubmit={handleSubmit} className="space-y-10">
+      <select
+        name="track"
+        onChange={handleChange}
+        className="input"
+        required
+      >
+        <option value="">Select Track</option>
+        <option>Combined Scholarship (UI/UX + PM)</option>
+        <option>UI/UX Design Only</option>
+        <option>Product Management Only</option>
+      </select>
 
-          {/* Personal Details */}
-          <section>
-            <h2 className="font-semibold mb-4">Personal Details</h2>
+      <label className="block text-sm font-medium mb-2">
+  How did you hear about us?
+</label>
 
-            <div className="space-y-4">
-              <input className="input" placeholder="Full Name *" />
-              <input className="input" placeholder="Portfolio / LinkedIn Profile *" />
+<select
+  name="referral"
+  onChange={handleChange}
+  className="input"
+  required
+>
+  <option value="">Select an option</option>
+  <option>Instagram</option>
+  <option>Facebook</option>
+  <option>WhatsApp</option>
+  <option>Friend</option>
+  <option>Aligntraits</option>
+  <option>From a friend</option>
+  <option>Others</option>
+</select>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input className="input" placeholder="City *" />
-                <input className="input" placeholder="Country *" />
-              </div>
-            </div>
-          </section>
 
-          {/* Contact Info */}
-          <section>
-            <h2 className="font-semibold mb-4">Contact Info</h2>
+      <textarea
+        name="blocker"
+        onChange={handleChange}
+        className="input"
+        placeholder="What is blocking your career growth?"
+        required
+      />
 
-            <div className="space-y-4">
-              <input className="input" placeholder="Email Address *" />
-              <input className="input" placeholder="Phone Number (WhatsApp) *" />
-              <input className="input" placeholder="Social Media Handle (Twitter / IG / LinkedIn) *" />
-            </div>
-          </section>
+      <textarea
+        name="accountability"
+        onChange={handleChange}
+        className="input"
+        placeholder="Why do you need accountability?"
+        required
+      />
 
-          {/* Program Details */}
-          <section>
-            <h2 className="font-semibold mb-4">Program Details</h2>
+      <label className="block text-sm font-medium mb-2">
+  Commitment Pledge: Can you dedicate 10–15 hrs/week?
+</label>
 
-            <div className="space-y-4">
-              <label className="flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer">
-                <input type="radio" name="track" defaultChecked />
-                <span>Combined Scholarship (UI/UX + PM) – 8 Weeks</span>
-              </label>
+<select
+  name="commitment"
+  onChange={handleChange}
+  className="input"
+  required
+>
+  <option value="">Select your commitment</option>
+  <option>Yes, I can</option>
+  <option>Tight schedule, but I will try</option>
+  <option>No</option>
+</select>
 
-              <label className="flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer">
-                <input type="radio" name="track" />
-                <span>UI/UX Design Only – 8 Weeks</span>
-              </label>
+      {error && (
+        <p className="text-red-600 text-sm">{error}</p>
+      )}
 
-              <label className="flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer">
-                <input type="radio" name="track" />
-                <span>Product Management Only – 8 Weeks</span>
-              </label>
-            </div>
-
-            {/* How did you hear */}
-            <div className="mt-6">
-              <label className="block text-sm font-medium mb-2">
-                How did you hear about us?
-              </label>
-
-              <select className="input">
-                <option value="">Select an option</option>
-                <option>Instagram</option>
-                <option>Facebook</option>
-                <option>WhatsApp</option>
-                <option>Aligntraits</option>
-                <option>From a friend</option>
-                <option>Other</option>
-              </select>
-            </div>
-          </section>
-
-          {/* Qualifying Questions */}
-          <section>
-            <h2 className="font-semibold mb-4">Qualifying Questions</h2>
-
-            <div className="space-y-4">
-              <textarea
-                rows="3"
-                className="input resize-none"
-                placeholder="What is the ONE thing blocking your career growth right now?"
-              />
-
-              <textarea
-                rows="3"
-                className="input resize-none"
-                placeholder="Why do you need an accountability partner right now?"
-              />
-
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Commitment Pledge: Can you dedicate 10–15 hrs/week?
-                </label>
-
-                <select className="input">
-                  <option value="">Select your commitment level</option>
-                  <option>Yes, I can</option>
-                  <option>Tight schedule, but I’ll try</option>
-                  <option>No, I can’t</option>
-                </select>
-              </div>
-            </div>
-          </section>
-
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-lg font-semibold transition"
-          >
-            Submit Application
-          </button>
-
-          <p className="text-xs text-gray-400 text-center">
-            By submitting, you agree to our Terms of Service and Privacy Policy.
-          </p>
-
-        </form>
-      </div>
-    </div>
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold disabled:opacity-50"
+      >
+        {loading ? "Submitting..." : "Submit Application"}
+      </button>
+    </form>
   );
 }
 

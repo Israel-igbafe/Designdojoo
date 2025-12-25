@@ -1,6 +1,9 @@
 import { CheckCircle, Instagram, Facebook, MessageCircle, Download, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ConfirmationPage() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-6 space-y-6">
@@ -77,7 +80,11 @@ export default function ConfirmationPage() {
 
         {/* Back Home */}
         <div className="flex justify-center">
-          <button className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
+          <button
+  onClick={() => navigate("/")}
+  className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+>
+
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </button>
