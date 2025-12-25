@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+function RegistrationForm() {
+  const navigate = useNavigate();
 
-const RegistrationForm = () => {
-    const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate("/confirmation");
@@ -12,71 +12,46 @@ const RegistrationForm = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 flex justify-center">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-sm px-6 py-8 md:px-10">
-        
+
         {/* Header */}
-<div className="mb-8">
-  <div className="inline-block bg-black rounded-lg px-14 py-4">
-    
-    {/* Takes 8 minutes */}
-    <div className="flex items-center gap-1 text-red-500 text-[11px] font-medium">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-3 h-3"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={1.5}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-      <span>Takes 8 minutes</span>
-    </div>
+        <div className="mb-8">
+          <div className="bg-black rounded-lg px-6 py-5">
+            <div className="flex items-center gap-2 text-red-500 text-xs mb-2">
+              ⏱ Takes 8 minutes
+            </div>
 
-    {/* Title */}
-    <h1 className="text-white text-xl md:text-2xl font-bold mt-1">
-      The DesignDojoo Product Launchpad
-    </h1>
+            <h1 className="text-white text-xl font-bold">
+              The DesignDojoo Product Launchpad
+            </h1>
 
-    {/* Subtitle */}
-    <p className="text-xs text-gray-300 mt-1">
-      Stop learning alone. Start building together.
-    </p>
-  </div>
-</div>
+            <p className="text-gray-300 text-sm mt-1">
+              Stop learning alone. Start building together.
+            </p>
+          </div>
+        </div>
 
-
-
-        {/* Intro Text */}
-        <div className="text-sm text-gray-600 space-y-4 mb-8">
+        {/* Intro */}
+        <div className="text-sm text-gray-600 space-y-4 mb-10">
           <p>
-            <strong>Welcome!</strong> Here’s the reality: We have{" "}
-            <strong>limited scholarship spots</strong> for this 8-week cohort.
-            This is not just a course; it is a hands-on, high-intensity career
-            accelerator.
+            <strong>Welcome!</strong> We have <strong>limited scholarship spots</strong> for this
+            8-week cohort. This is a hands-on, high-intensity career accelerator.
           </p>
 
           <p>
-            We need to ensure we’re bringing together the right mix of UI
-            Designers and Product Managers who are ready to be accountable, do
-            the work, and launch their careers.
+            We’re selecting designers and product managers ready to do the work
+            and launch their careers.
           </p>
 
           <p>
-            To apply, answer the questions below honestly.{" "}
-            <strong>We prioritize authenticity over perfection.</strong> Show
-            us you are ready to commit.
+            <strong>Authenticity over perfection.</strong> Answer honestly.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-10">
-          
+
           {/* Personal Details */}
           <section>
-            <h2 className="section-title">Personal Details</h2>
+            <h2 className="font-semibold mb-4">Personal Details</h2>
 
             <div className="space-y-4">
               <input className="input" placeholder="Full Name *" />
@@ -91,52 +66,57 @@ const RegistrationForm = () => {
 
           {/* Contact Info */}
           <section>
-            <h2 className="section-title">Contact Info</h2>
+            <h2 className="font-semibold mb-4">Contact Info</h2>
 
             <div className="space-y-4">
               <input className="input" placeholder="Email Address *" />
               <input className="input" placeholder="Phone Number (WhatsApp) *" />
-              <input className="input" placeholder="Social Media Handle (Twitter/IG/LinkedIn) *" />
+              <input className="input" placeholder="Social Media Handle (Twitter / IG / LinkedIn) *" />
             </div>
           </section>
 
           {/* Program Details */}
           <section>
-            <h2 className="section-title">Program Details</h2>
+            <h2 className="font-semibold mb-4">Program Details</h2>
 
-            <div className="space-y-3">
-              <label className="radio">
+            <div className="space-y-4">
+              <label className="flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer">
                 <input type="radio" name="track" defaultChecked />
-                Combined Scholarship (UI/UX + PM) – 8 Weeks
+                <span>Combined Scholarship (UI/UX + PM) – 8 Weeks</span>
               </label>
 
-              <label className="radio">
+              <label className="flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer">
                 <input type="radio" name="track" />
-                UI/UX Design Only – 8 Weeks
+                <span>UI/UX Design Only – 8 Weeks</span>
               </label>
 
-              <label className="radio">
+              <label className="flex items-center gap-3 border rounded-lg px-4 py-3 cursor-pointer">
                 <input type="radio" name="track" />
-                Product Management Only – 8 Weeks
+                <span>Product Management Only – 8 Weeks</span>
               </label>
             </div>
 
-            <select className="input mt-4">
-              <option>How did you hear about us?</option>
-              <option>Whatsapp</option>
-              <option>Instagram</option>
-              <option>Facebook</option>
-              <option>Aligntraits</option>
-              <option>From a friend</option>
-              <option>Others</option>
-            </select>
-          </section>
+            {/* How did you hear */}
+            <div className="mt-6">
+              <label className="block text-sm font-medium mb-2">
+                How did you hear about us?
+              </label>
 
-          
+              <select className="input">
+                <option value="">Select an option</option>
+                <option>Instagram</option>
+                <option>Facebook</option>
+                <option>WhatsApp</option>
+                <option>Aligntraits</option>
+                <option>From a friend</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </section>
 
           {/* Qualifying Questions */}
           <section>
-            <h2 className="section-title">Qualifying Questions</h2>
+            <h2 className="font-semibold mb-4">Qualifying Questions</h2>
 
             <div className="space-y-4">
               <textarea
@@ -151,35 +131,37 @@ const RegistrationForm = () => {
                 placeholder="Why do you need an accountability partner right now?"
               />
 
-              <select className="input">
-                <option>
+              <div>
+                <label className="block text-sm font-medium mb-2">
                   Commitment Pledge: Can you dedicate 10–15 hrs/week?
-                </option>
-                <option>Yes i can</option>
-                <option>Tight schedule, but i'll try</option>
-                <option>No i can't</option>
-              </select>
+                </label>
+
+                <select className="input">
+                  <option value="">Select your commitment level</option>
+                  <option>Yes, I can</option>
+                  <option>Tight schedule, but I’ll try</option>
+                  <option>No, I can’t</option>
+                </select>
+              </div>
             </div>
           </section>
 
           {/* Submit */}
           <button
-  type="submit"
-  onClick={() => navigate("/confirmation")}
-  className="bg-red-500 text-white px-6 py-3 rounded-lg"
->
-  Submit Application
-</button>
-
-
+            type="submit"
+            className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-lg font-semibold transition"
+          >
+            Submit Application
+          </button>
 
           <p className="text-xs text-gray-400 text-center">
             By submitting, you agree to our Terms of Service and Privacy Policy.
           </p>
+
         </form>
       </div>
     </div>
   );
-};
+}
 
 export default RegistrationForm;
