@@ -26,22 +26,26 @@ function RegistrationForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    const { error } = await supabase
-      .from("applications")
-      .insert([form]);
+  console.log("FORM DATA BEING SENT:", form); // 👈 ADD THIS
 
-    if (error) {
-      setError("Something went wrong. Please try again.");
-      setLoading(false);
-      return;
-    }
+  const { error } = await supabase
+    .from("applications")
+    .insert([form]);
 
-    navigate("/confirmation");
-  };
+  if (error) {
+    console.error("SUPABASE ERROR:", error); // 👈 ADD THIS
+    setError(error.message);                 // 👈 CHANGE THIS LINE
+    setLoading(false);
+    return;
+  }
+
+  navigate("/confirmation");
+};
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">

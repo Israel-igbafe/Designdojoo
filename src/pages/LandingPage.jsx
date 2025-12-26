@@ -9,7 +9,7 @@ import Footer from "../components/Footer";
 
 function LandingPage() {
   return (
-    <div>
+    <div className="bg-white min-h-screen">
       <Navbar />
       <HeroSection />
       <WhyFailSection />

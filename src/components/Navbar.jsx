@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
-
 function Navbar() {
-  const navigate = useNavigate();
-
   return (
-    <button onClick={() => navigate("/apply")}>
-      Apply Now
-    </button>
+    <div style={{ background: "black", color: "white", padding: "20px" }}>
+      DESIGNDOJOO NAVBAR
+    </div>
   );
 }
+
+export default Navbar;
