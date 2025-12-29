@@ -1,5 +1,8 @@
 // 1️⃣ IMPORTS (TOP OF FILE)
 import { useNavigate } from "react-router-dom";
+import { Users, Briefcase, BadgeCheck } from "lucide-react";
+
+
 
 function HeroSection() {
   // 2️⃣ HOOKS (INSIDE COMPONENT, BEFORE RETURN)
@@ -11,10 +14,22 @@ function HeroSection() {
 
         {/* LEFT CONTENT */}
         <div>
-          {/* Badge */}
-          <span className="inline-block mb-4 text-xs font-semibold text-red-600 bg-red-100 px-4 py-1 rounded-full">
-            Limited Scholarship Spots Available
-          </span>
+          {/* Badges */}
+<div className="flex flex-wrap items-center gap-3 mb-6">
+  {/* Limited Scholarship */}
+  <div className="flex items-center gap-2 bg-white border border-red-200 text-red-600 text-xs font-semibold px-4 py-2 rounded-full shadow-sm">
+    <span className="w-2 h-2 bg-red-600 rounded-full" />
+    Limited Scholarship Spots Available
+  </div>
+
+  {/* Only 15 Slots */}
+  <div className="flex items-center gap-2 bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm">
+  <span>⏱</span>
+  Only 15 Slots Left
+</div>
+
+</div>
+
 
           {/* Heading */}
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
@@ -24,10 +39,49 @@ function HeroSection() {
           </h1>
 
           {/* Description */}
-          <p className="mt-6 text-gray-600 text-lg max-w-xl">
-            Stop learning alone. Start building together. Join an elite cohort of
-            designers and product managers and launch your career in just 8 weeks.
-          </p>
+          <p className="mt-6 text-gray-600 text-base leading-relaxed max-w-xl">
+  Stop learning alone, start building together. Join an elite cohort of UI Designers
+  and Product Managers. Get paired with an accountability partner, build 3 live
+  projects, and launch your career with real agency experience.
+</p>
+ 
+{/* Stats */}
+<div className="flex flex-wrap items-center gap-6 mt-8">
+  <div className="flex items-center gap-3">
+    <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center">
+  <Users className="w-4 h-4 text-red-600" />
+</div>
+
+    <div className="text-sm">
+      <p className="font-semibold text-gray-900">1:1</p>
+      <p className="text-gray-500 text-xs">Paired Coaching</p>
+    </div>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center">
+  <Briefcase className="w-4 h-4 text-red-600" />
+</div>
+
+    <div className="text-sm">
+      <p className="font-semibold text-gray-900">3+</p>
+      <p className="text-gray-500 text-xs">Real Projects</p>
+    </div>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center">
+  <BadgeCheck className="w-4 h-4 text-red-600" />
+</div>
+
+
+    <div className="text-sm">
+      <p className="font-semibold text-gray-900">8</p>
+      <p className="text-gray-500 text-xs">Week Program</p>
+    </div>
+  </div>
+</div>
+
 
           {/* Buttons */}
           <div className="mt-8 flex flex-wrap gap-4">
@@ -40,21 +94,29 @@ function HeroSection() {
             </button>
 
             {/* WhatsApp button (leave for later) */}
-            <button className="border border-gray-300 text-gray-800 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">
-              Chat on WhatsApp
-            </button>
+            <button className="border border-red-600 text-red-600 font-semibold px-6 py-3 rounded-lg hover:bg-red-50 transition">
+  Chat on WhatsApp
+</button>
+
           </div>
 
           {/* Social proof */}
-          <p className="mt-4 text-sm text-gray-500">
-            Join 500+ Nigerian creatives already building with DesignDojoo
-          </p>
+          <p className="mt-4 text-sm text-red-600 font-medium">
+  Be one of 500+ Nigerian creatives
+</p>
+
         </div>
 
         {/* RIGHT CONTENT (IMAGE PLACEHOLDER) */}
-        <div className="w-full h-72 md:h-96 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">
-          Hero Image Placeholder
-        </div>
+       {/* RIGHT CONTENT (HERO IMAGE) */}
+<div className="w-full h-80 md:h-96 flex items-center justify-end">
+  <img
+    src="/images/hero/hero-image.svg"
+    alt="DesignDojoo Hero"
+    className="w-full h-full object-cover"
+  />
+</div>
+
 
       </div>
     </section>

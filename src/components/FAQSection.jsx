@@ -1,72 +1,91 @@
 import { useState } from "react";
 
-function FAQItem({ question, answer }) {
-  const [open, setOpen] = useState(false);
+const faqs = [
+  {
+    question: "Do I need prior experience?",
+    answer:
+      `While we welcome absolute beginners who are fast learners, this program is optimized for "Restarters"—designers and PMs who have watched tutorials or started learning but struggle with consistency.
 
-  return (
-    <div className="border-b border-gray-200 py-4">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center text-left"
-      >
-        <span className="font-medium text-gray-900">{question}</span>
-        <span className="text-red-600 text-xl">
-          {open ? "−" : "+"}
-        </span>
-      </button>
+You don’t need to be an expert, but having basic familiarity with tools (like Figma) or concepts helps. Our Weeks 1–2 Bootcamp Refresher ensures everyone starts on the same solid foundation.`,
+  },
+  {
+    question: "How long is the program?",
+    answer:
+      `It is a strict 8-Week Accelerator.
 
-      {open && (
-        <p className="mt-3 text-gray-600 text-sm leading-relaxed">
-          {answer}
-        </p>
-      )}
-    </div>
-  );
-}
+• Weeks 1–2: Intensive Refresher & Training  
+• Weeks 3–5: The Accountability Sprints (3 Projects in 3 Weeks)  
+• Weeks 6–7: Personal Branding (CV, LinkedIn, Portfolio)  
+• Week 8: Agency Launch & Paid Gigs`,
+  },
+  {
+    question: "What does the bootcamp cost?",
+    answer:
+      `The standard tuition for the Product Experience Track is ₦83,659.
+
+However, for this upcoming cohort, we are offering merit-based scholarships covering 50%–75% of the tuition. If your application is accepted, you will only pay a fraction of the cost as a commitment fee to secure your accountability partner.`,
+  },
+  {
+    question: "Do I actually get a job?",
+    answer:
+      `We do something better than just “promise” jobs—we provide real work.
+
+DesignDojo operates as a Design Agency. In Week 8, successful graduates gain access to real, low-cost agency gigs to build paid experience. Top performers are prioritized for full-time roles within the DesignDojo Agency or recommended to hiring partners.`,
+  },
+  {
+    question: "Are there payment plans available?",
+    answer:
+      `Because the scholarship already covers the majority of tuition fees (reducing it to as low as ₦20k–₦40k), we generally require the full commitment fee upfront to secure your seat and lock in your assigned accountability partner.`,
+  },
+];
 
 function FAQSection() {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
-    <section className="bg-gray-50 px-6 md:px-12 py-20">
-      <div className="max-w-4xl mx-auto">
+    <section id="faq" className="bg-white py-20">
+      <div className="max-w-3xl mx-auto px-6">
+       <div className="text-center mb-12">
+  <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+    Frequently Asked <span className="text-red-600">Questions</span>
+  </h2>
 
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            Frequently Asked <span className="text-red-600">Questions</span>
-          </h2>
-          <p className="mt-4 text-gray-600">
-            Everything you need to know before applying.
-          </p>
-        </div>
+  <p className="mt-3 text-sm text-gray-500">
+    Everything you need to know about the scholarship program.
+  </p>
+</div>
 
-        {/* FAQ Items */}
-        <div className="bg-white rounded-xl shadow-sm p-6">
 
-          <FAQItem
-            question="Is this program beginner-friendly?"
-            answer="Yes. While basic familiarity with design or product concepts helps, the program is structured to support both beginners and intermediate learners."
-          />
+        <div className="space-y-4">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="border border-gray-200 rounded-xl overflow-hidden"
+            >
+              <button
+                onClick={() => toggleFAQ(index)}
+                className="w-full flex items-center justify-between px-6 py-5 text-left"
+              >
+                <span className="font-medium text-gray-900">
+                  {faq.question}
+                </span>
 
-          <FAQItem
-            question="How much time do I need to commit weekly?"
-            answer="You should be able to commit 10–15 hours per week for live sessions, assignments, and accountability sprints."
-          />
+                <span className="text-xl text-gray-500">
+                  {openIndex === index ? "−" : "+"}
+                </span>
+              </button>
 
-          <FAQItem
-            question="Is the scholarship guaranteed?"
-            answer="No. Scholarships are limited and awarded based on your application, commitment level, and alignment with the program goals."
-          />
-
-          <FAQItem
-            question="Will I work on real projects?"
-            answer="Yes. You will collaborate with real teammates and build real products that can be added directly to your portfolio."
-          />
-
-          <FAQItem
-            question="What happens after the 8 weeks?"
-            answer="Top-performing participants may be absorbed into DesignDojoo’s agency projects or recommended for paid opportunities."
-          />
-
+              {openIndex === index && (
+                <div className="px-6 pb-6 text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+                  {faq.answer}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>

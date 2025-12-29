@@ -1,57 +1,92 @@
+import {
+  Instagram,
+  Twitter,
+  Linkedin,
+  Mail
+} from "lucide-react";
+
 function Footer() {
   return (
-    <footer className="bg-black text-gray-300 px-6 md:px-12 py-16">
-      <div className="max-w-6xl mx-auto grid gap-12 md:grid-cols-4">
+    <footer className="bg-[#0B0F14] text-gray-400 pt-16 pb-8 px-6">
+      <div className="max-w-6xl mx-auto grid gap-12 md:grid-cols-3">
 
-        {/* Brand */}
+        {/* LEFT: LOGO + TEXT */}
         <div>
-          <h3 className="text-white text-xl font-bold mb-4">
-            DesignDojoo
-          </h3>
-          <p className="text-sm text-gray-400">
-            Building the next generation of product designers and managers
-            through accountability, real projects, and community.
+          {/* Logo */}
+          <div className="flex items-center gap-2 mb-4">
+            <img
+              src="/logo.svg"
+              alt="DesignDojoo Logo"
+              className="h-6 w-auto"
+            />
+            <span className="text-white font-semibold text-lg">
+              DesignDojoo
+            </span>
+          </div>
+
+          {/* Description */}
+          <p className="text-sm leading-relaxed max-w-xs mb-6">
+            Transforming aspiring designers and product managers into
+            industry-ready professionals through accountability, real
+            projects, and career support.
           </p>
+
+          {/* Social Icons */}
+          <div className="flex items-center gap-4">
+            <Instagram className="w-5 h-5 hover:text-white cursor-pointer" />
+            <Twitter className="w-5 h-5 hover:text-white cursor-pointer" />
+            <Linkedin className="w-5 h-5 hover:text-white cursor-pointer" />
+            <Mail className="w-5 h-5 hover:text-white cursor-pointer" />
+          </div>
         </div>
 
-        {/* Program */}
-        <div>
-          <h4 className="text-white font-semibold mb-4">Program</h4>
-          <ul className="space-y-2 text-sm">
-            <li>Product Experience Scholarship</li>
-            <li>UI/UX Design Track</li>
-            <li>Product Management Track</li>
-            <li>Agency Projects</li>
+        {/* MIDDLE: PROGRAM */}
+        <div className= "md:ml-24">
+          <h4 className="text-white font-semibold mb-4">
+            Program
+          </h4>
+          <ul className="space-y-3 text-sm">
+            <li className="hover:text-white cursor-pointer">
+              UI Design Track
+            </li>
+            <li className="hover:text-white cursor-pointer">
+              PM Track
+            </li>
+            <li className="hover:text-white cursor-pointer">
+              Curriculum
+            </li>
+            <li className="hover:text-white cursor-pointer">
+              Scholarship
+            </li>
           </ul>
         </div>
 
-        {/* Resources */}
-        <div>
-          <h4 className="text-white font-semibold mb-4">Resources</h4>
-          <ul className="space-y-2 text-sm">
-            <li>FAQs</li>
-            <li>Pricing</li>
-            <li>Application Process</li>
-            <li>Terms & Privacy</li>
-          </ul>
-        </div>
-
-        {/* Social */}
-        <div>
-          <h4 className="text-white font-semibold mb-4">Connect</h4>
-          <ul className="space-y-2 text-sm">
-            <li>Twitter</li>
-            <li>LinkedIn</li>
-            <li>Instagram</li>
-            <li>WhatsApp</li>
+        {/* RIGHT: RESOURCES */}
+        <div className = "md:ml-16">
+          <h4 className="text-white font-semibold mb-4">
+            Resources
+          </h4>
+          <ul className="space-y-3 text-sm">
+            <li className="hover:text-white cursor-pointer">
+              Blog
+            </li>
+            <li className="hover:text-white cursor-pointer">
+              FAQ
+            </li>
+            <li className="hover:text-white cursor-pointer">
+              Contact Us
+            </li>
+            <li className="hover:text-white cursor-pointer">
+              Privacy Policy
+            </li>
           </ul>
         </div>
 
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-gray-800 mt-12 pt-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} DesignDojoo. All rights reserved.
+      {/* BOTTOM */}
+      <div className="mt-12 border-t border-gray-800 pt-6 text-center text-xs text-gray-500">
+        © 2025 DesignDojoo. All rights reserved.
       </div>
     </footer>
   );
