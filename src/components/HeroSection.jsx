@@ -100,10 +100,34 @@ function HeroSection() {
 
           </div>
 
-          {/* Social proof */}
-          <p className="mt-4 text-sm text-red-600 font-medium">
-  Be one of 500+ Nigerian creatives
-</p>
+          
+          
+          
+         {/* Social proof */}
+<div className="mt-6 flex items-center gap-3">
+  {/* Avatar ring */}
+  <div className="flex items-center -space-x-3 rounded-full border border-red-200 px-2 py-1">
+    {[
+      "/images/avatars/avatar-1.svg",
+      "/images/avatars/avatar-2.svg",
+      "/images/avatars/avatar-3.svg",
+      "/images/avatars/avatar-4.svg",
+      "/images/avatars/avatar-5.svg",
+    ].map((src, index) => (
+      <img
+        key={index}
+        src={src}
+        alt="Community member"
+        className="w-7 h-7 rounded-full border border-white object-cover"
+      />
+    ))}
+  </div>
+
+  {/* Text */}
+  <p className="text-sm text-red-600 font-medium">
+    Be one of 500+ Nigerian creatives
+  </p>
+</div>
 
         </div>
 

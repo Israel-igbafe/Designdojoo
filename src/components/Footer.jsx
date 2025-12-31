@@ -14,11 +14,12 @@ function Footer() {
         <div>
           {/* Logo */}
           <div className="flex items-center gap-2 mb-4">
-            <img
-              src="/logo.svg"
-              alt="DesignDojoo Logo"
-              className="h-6 w-auto"
-            />
+           <img
+  src="/logo-footer.svg"
+  alt="DesignDojoo"
+  className="h-6 w-auto"
+/>
+
             <span className="text-white font-semibold text-lg">
               DesignDojoo
             </span>
