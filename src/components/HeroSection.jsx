@@ -9,7 +9,8 @@ function HeroSection() {
   const navigate = useNavigate();
 
   return (
-    <section className="bg-white px-6 md:px-12 py-16">
+    <section className="bg-white px-4 sm:px-6 md:px-12 py-12 md:py-16">
+
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
 
         {/* LEFT CONTENT */}
@@ -32,7 +33,7 @@ function HeroSection() {
 
 
           {/* Heading */}
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
             The 8-Week <br />
             <span className="text-red-600">Product Experience</span> <br />
             Scholarship
@@ -84,7 +85,8 @@ function HeroSection() {
 
 
           {/* Buttons */}
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+
             {/* 3️⃣ APPLY BUTTON (ROUTES TO /apply) */}
             <button
               onClick={() => navigate("/apply")}
@@ -94,9 +96,15 @@ function HeroSection() {
             </button>
 
             {/* WhatsApp button (leave for later) */}
-            <button className="border border-red-600 text-red-600 font-semibold px-6 py-3 rounded-lg hover:bg-red-50 transition">
+           <a
+  href="https://wa.me/2349162682043?text=Hello%20DesignDojoo%20team%20%F0%9F%91%8B%0AI'm%20interested%20in%20the%20Product%20Experience%20Scholarship%20and%20would%20like%20more%20details."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center border border-red-600 text-red-600 font-semibold px-6 py-3 rounded-lg hover:bg-red-50 transition"
+>
   Chat on WhatsApp
-</button>
+</a>
+
 
           </div>
 
@@ -106,7 +114,7 @@ function HeroSection() {
          {/* Social proof */}
 <div className="mt-6 flex items-center gap-3">
   {/* Avatar ring */}
-  <div className="flex items-center -space-x-3 rounded-full border border-red-200 px-2 py-1">
+  <div className="flex items-center -space-x-3 rounded-full border border-red-300/70 px-4 py-2">
     {[
       "/images/avatars/avatar-1.svg",
       "/images/avatars/avatar-2.svg",
@@ -118,7 +126,7 @@ function HeroSection() {
         key={index}
         src={src}
         alt="Community member"
-        className="w-7 h-7 rounded-full border border-white object-cover"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white object-cover"
       />
     ))}
   </div>
@@ -133,7 +141,8 @@ function HeroSection() {
 
         {/* RIGHT CONTENT (IMAGE PLACEHOLDER) */}
        {/* RIGHT CONTENT (HERO IMAGE) */}
-<div className="w-full h-80 md:h-96 flex items-center justify-end">
+<div className="w-full h-64 sm:h-72 md:h-96 flex items-center justify-center md:justify-end order-first md:order-none">
+
   <img
     src="/images/hero/hero-image.svg"
     alt="DesignDojoo Hero"

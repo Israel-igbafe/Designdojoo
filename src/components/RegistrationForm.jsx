@@ -63,7 +63,7 @@ function RegistrationForm() {
 <div className="bg-[#0B0F14] text-white rounded-xl p-6 mb-8">
   <div className="flex items-center gap-2 text-sm text-red-500 mb-2">
     <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-    <span>Takes ~8 minutes</span>
+    <span>Takes ~3 minutes</span>
   </div>
 
   <h1 className="text-xl font-semibold">
@@ -113,14 +113,14 @@ function RegistrationForm() {
 
           <div>
   <label className="block text-sm font-medium mb-2">
-    Portfolio / LinkedIn Profile <span className="text-red-600">*</span>
+    Portfolio / LinkedIn Profile (Optional) <span className="text-red-600">*</span>
   </label>
   <input
     name="portfolio"
     onChange={handleChange}
     className="input"
     placeholder="https://linkedin.com/in/yourprofile"
-    required
+    
   />
 </div>
 

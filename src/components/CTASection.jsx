@@ -31,9 +31,15 @@ function CTASection() {
           </button>
 
           {/* WhatsApp Button */}
-          <button className="border border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-red-600 transition">
-            Chat on WhatsApp
-          </button>
+          <a
+  href="https://wa.me/2349162682043?text=Hello%20DesignDojoo%20team%20%F0%9F%91%8B%0AI'm%20interested%20in%20the%20Product%20Experience%20Scholarship%20and%20would%20like%20more%20details."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center border border-white-600 text-white-600 font-semibold px-6 py-3 rounded-lg hover:bg-white-50 transition"
+>
+  Chat on WhatsApp
+</a>
+
         </div>
 
         {/* Small Text */}

@@ -2,8 +2,43 @@ import { CheckCircle, Instagram, Facebook, MessageCircle, Download, ArrowLeft } 
 import { useNavigate } from "react-router-dom";
 
 
-export default function ConfirmationPage() {
+
+  export default function ConfirmationPage() {
   const navigate = useNavigate();
+
+  // ✅ ADD THIS
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.origin);
+      alert("Link copied to clipboard!");
+    } catch (err) {
+      alert("Failed to copy link");
+    }
+  };
+
+  const handleShareInvite = async () => {
+  const shareData = {
+    title: "DesignDojoo Scholarship",
+    text: "I just applied to the DesignDojoo Product Experience Scholarship. Join me — let’s stay accountable and grow together.",
+    url: window.location.origin,
+  };
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      console.log("Share cancelled", err);
+    }
+  } else {
+    // Fallback (WhatsApp)
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+      `${shareData.text} ${shareData.url}`
+    )}`;
+    window.open(whatsappUrl, "_blank");
+  }
+};
+
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-6 space-y-6">
@@ -55,12 +90,20 @@ export default function ConfirmationPage() {
           </p>
 
           <div className="flex gap-3">
-            <button className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm font-medium">
-              Send Invite to a Partner
-            </button>
-            <button className="flex-1 border border-red-500 text-red-500 py-2 rounded-lg text-sm font-medium hover:bg-red-100">
-              Copy Link
-            </button>
+           <button
+  onClick={handleShareInvite}
+  className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm font-medium"
+>
+  Send Invite to a Partner
+</button>
+
+            <button
+  onClick={handleCopyLink}
+  className="flex-1 border border-red-500 text-red-500 py-2 rounded-lg text-sm font-medium hover:bg-red-100"
+>
+  Copy Link
+</button>
+
           </div>
         </div>
 
@@ -72,10 +115,15 @@ export default function ConfirmationPage() {
             prepare for the journey ahead.
           </p>
 
-          <button className="w-full bg-black text-white py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-900">
-            <Download className="w-4 h-4" />
-            Download Free Resource
-          </button>
+         <a
+  href="/resources/DesignDojoo-UI-Guide.pdf"
+  download
+  className="w-full bg-black text-white py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-900"
+>
+  <Download className="w-4 h-4" />
+  Download Free Resource
+</a>
+
         </div>
 
         {/* Back Home */}
@@ -101,4 +149,4 @@ function SocialIcon({ icon }) {
       {icon}
     </button>
   );
-}
+} 
