@@ -78,6 +78,16 @@ https://www.designdojoo.com/`
   and Product Managers. Get paired with an accountability partner, build 3 live
   projects, and launch your career with real agency experience.
 </p>
+
+{/* HERO IMAGE — mobile only */}
+<div className="block md:hidden mt-6 w-full h-64 sm:h-72">
+  <img
+    src="/images/hero/hero-image.svg"
+    alt="DesignDojoo Hero"
+    className="w-full h-full object-cover rounded-xl"
+  />
+</div>
+
  
 {/* Stats */}
 <div className="flex flex-wrap items-center gap-6 mt-8">
@@ -175,15 +185,15 @@ https://www.designdojoo.com/`
 
         {/* RIGHT CONTENT (IMAGE PLACEHOLDER) */}
        {/* RIGHT CONTENT (HERO IMAGE) */}
-<div className="w-full h-64 sm:h-72 md:h-96 flex items-center justify-center md:justify-end">
-
-
+{/* HERO IMAGE — desktop only */}
+<div className="hidden md:flex w-full h-96 items-center justify-end">
   <img
     src="/images/hero/hero-image.svg"
     alt="DesignDojoo Hero"
     className="w-full h-full object-cover"
   />
 </div>
+
 
 
       </div>
