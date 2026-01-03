@@ -1,8 +1,38 @@
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
 function CTASection() {
   const navigate = useNavigate();
+
+  const [slotsLeft, setSlotsLeft] = useState(15);
+
+useEffect(() => {
+  const fetchSlots = async () => {
+    const { data, error } = await supabase
+      .from("slots")
+      .select("slots_left")
+      .eq("id", 1)
+      .single();
+
+    if (!error && data) {
+      setSlotsLeft(data.slots_left);
+    }
+  };
+
+  fetchSlots();
+}, []);
+
+const whatsappMessage = encodeURIComponent(
+  `I just applied to the DesignDojoo Product Experience Scholarship 🚀
+
+There are only ${slotsLeft} spots remaining.
+Join me — let’s stay accountable and grow together 👥✨
+
+https://www.designdojoo.com/`
+);
+
 
   return (
     <section className="bg-gradient-to-r from-red-600 to-red-700 py-20 px-6">
@@ -32,13 +62,14 @@ function CTASection() {
 
           {/* WhatsApp Button */}
           <a
-  href="https://wa.me/2349162682043?text=Hello%20DesignDojoo%20team%20%F0%9F%91%8B%0AI'm%20interested%20in%20the%20Product%20Experience%20Scholarship%20and%20would%20like%20more%20details."
+  href={`https://wa.me/2349162682043?text=${whatsappMessage}`}
   target="_blank"
   rel="noopener noreferrer"
-  className="inline-flex items-center justify-center border border-white-600 text-white-600 font-semibold px-6 py-3 rounded-lg hover:bg-white-50 transition"
+  className="inline-flex items-center justify-center border border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/10 transition"
 >
   Chat on WhatsApp
 </a>
+
 
         </div>
 
