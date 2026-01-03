@@ -1,12 +1,44 @@
 // 1️⃣ IMPORTS (TOP OF FILE)
 import { useNavigate } from "react-router-dom";
 import { Users, Briefcase, BadgeCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
+
 
 
 
 function HeroSection() {
   // 2️⃣ HOOKS (INSIDE COMPONENT, BEFORE RETURN)
   const navigate = useNavigate();
+
+  const [slotsLeft, setSlotsLeft] = useState(15);
+
+useEffect(() => {
+  const fetchSlots = async () => {
+    const { data, error } = await supabase
+      .from("slots")
+      .select("slots_left")
+      .eq("id", 1)
+      .single();
+
+    if (!error && data) {
+      setSlotsLeft(data.slots_left);
+    }
+  };
+
+  fetchSlots();
+}, []);
+
+const whatsappMessage = encodeURIComponent(
+  `I just applied to the DesignDojoo Product Experience Scholarship 🚀
+
+There are only ${slotsLeft} spots remaining.
+Join me — let’s stay accountable and grow together 👥✨
+
+https://www.designdojoo.com/`
+);
+
+
 
   return (
     <section className="bg-white px-4 sm:px-6 md:px-12 py-12 md:py-16">
@@ -24,10 +56,11 @@ function HeroSection() {
   </div>
 
   {/* Only 15 Slots */}
-  <div className="flex items-center gap-2 bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm">
+ <div className="flex items-center gap-2 bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm">
   <span>⏱</span>
-  Only 15 Slots Left
+  Only {slotsLeft} Slots Left
 </div>
+
 
 </div>
 
@@ -97,13 +130,14 @@ function HeroSection() {
 
             {/* WhatsApp button (leave for later) */}
            <a
-  href="https://wa.me/2349162682043?text=Hello%20DesignDojoo%20team%20%F0%9F%91%8B%0AI'm%20interested%20in%20the%20Product%20Experience%20Scholarship%20and%20would%20like%20more%20details."
+  href={`https://wa.me/2349162682043?text=${whatsappMessage}`}
   target="_blank"
   rel="noopener noreferrer"
   className="inline-flex items-center justify-center border border-red-600 text-red-600 font-semibold px-6 py-3 rounded-lg hover:bg-red-50 transition"
 >
   Chat on WhatsApp
 </a>
+
 
 
           </div>
@@ -141,7 +175,8 @@ function HeroSection() {
 
         {/* RIGHT CONTENT (IMAGE PLACEHOLDER) */}
        {/* RIGHT CONTENT (HERO IMAGE) */}
-<div className="w-full h-64 sm:h-72 md:h-96 flex items-center justify-center md:justify-end order-first md:order-none">
+<div className="w-full h-64 sm:h-72 md:h-96 flex items-center justify-center md:justify-end">
+
 
   <img
     src="/images/hero/hero-image.svg"

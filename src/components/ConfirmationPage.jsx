@@ -72,10 +72,22 @@ import { useNavigate } from "react-router-dom";
           </p>
 
           <div className="flex gap-4">
-            <SocialIcon icon={<Instagram />} />
-            <SocialIcon icon={<Facebook />} />
-            <SocialIcon icon={<MessageCircle />} />
-          </div>
+  <SocialIcon
+    icon={<Instagram />}
+    link="https://www.instagram.com/designdojoo"
+  />
+
+  <SocialIcon
+    icon={<Facebook />}
+    link="https://www.facebook.com/designdojoo"
+  />
+
+  <SocialIcon
+    icon={<MessageCircle />}
+    link="https://wa.me/2349162682043"
+  />
+</div>
+
         </div>
 
         {/* Boost Acceptance */}
@@ -143,10 +155,15 @@ import { useNavigate } from "react-router-dom";
   );
 }
 
-function SocialIcon({ icon }) {
+function SocialIcon({ icon, link }) {
   return (
-    <button className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center text-white hover:bg-gray-800">
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center text-white hover:bg-gray-800"
+    >
       {icon}
-    </button>
+    </a>
   );
-} 
+}

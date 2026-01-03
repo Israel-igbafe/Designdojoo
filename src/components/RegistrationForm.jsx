@@ -33,9 +33,11 @@ function RegistrationForm() {
 
    console.log("FORM DATA BEING SENT:", form); // 👈 ADD THIS
 
-  const { error } = await supabase
-    .from("applications")
-    .insert([form]);
+  const { error } = await supabase.rpc(
+  "submit_application_and_update_slots",
+  { app: form }
+);
+
 
    if (error) {
     console.error("SUPABASE ERROR:", error); // 👈 ADD THIS
