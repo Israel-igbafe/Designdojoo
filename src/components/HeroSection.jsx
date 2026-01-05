@@ -2,7 +2,8 @@
 import { useNavigate } from "react-router-dom";
 import { Users, Briefcase, BadgeCheck } from "lucide-react";
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+
+
 
 
 
@@ -14,20 +15,16 @@ function HeroSection() {
   const [slotsLeft, setSlotsLeft] = useState(15);
 
 useEffect(() => {
-  const fetchSlots = async () => {
-    const { data, error } = await supabase
-      .from("slots")
-      .select("slots_left")
-      .eq("id", 1)
-      .single();
+  const storedSlots = localStorage.getItem("slotsLeft");
 
-    if (!error && data) {
-      setSlotsLeft(data.slots_left);
-    }
-  };
-
-  fetchSlots();
+  if (storedSlots) {
+    setSlotsLeft(Number(storedSlots));
+  } else {
+    localStorage.setItem("slotsLeft", 15);
+    setSlotsLeft(15);
+  }
 }, []);
+
 
 const whatsappMessage = encodeURIComponent(
   `I just applied to the DesignDojoo Product Experience Scholarship 🚀
@@ -37,6 +34,8 @@ Join me — let’s stay accountable and grow together 👥✨
 
 https://www.designdojoo.com/`
 );
+
+
 
 
 

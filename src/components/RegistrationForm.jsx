@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
+
 function RegistrationForm() {
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [form, setForm] = useState({
     full_name: "",
     email: "",
-    phone: "", 
+    phone: "",
     social_handle: "",
     city: "",
     country: "",
@@ -22,32 +24,52 @@ function RegistrationForm() {
     commitment: ""
   });
 
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+ 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-   console.log("FORM DATA BEING SENT:", form); // 👈 ADD THIS
+  try {
+    console.log("FORM DATA BEING SENT:", form);
 
-  const { error } = await supabase.rpc(
-  "submit_application_and_update_slots",
-  { app: form }
-);
+    // 1️⃣ Save to Supabase
+    const { error: supabaseError } = await supabase
+      .from("applications")
+      .insert([form]);
 
+    if (supabaseError) {
+      throw supabaseError;
+    }
 
-   if (error) {
-    console.error("SUPABASE ERROR:", error); // 👈 ADD THIS
-    setError(error.message); // 👈 CHANGE THIS LINE
+    // 2️⃣ Slot reduction (local demo logic)
+    let slots = Number(localStorage.getItem("slotsLeft")) || 15;
+
+    if (slots <= 1) {
+      localStorage.setItem("slotsLeft", 15);
+    } else {
+      localStorage.setItem("slotsLeft", slots - 1);
+    }
+
+    // 3️⃣ Navigate only after success
+    navigate("/confirmation");
+
+  } catch (err) {
+    console.error("SUBMIT ERROR:", err);
+    setError("Something went wrong. Please try again.");
+  } finally {
     setLoading(false);
-    return;
- }
+  }
+};
 
-  navigate("/confirmation");
-  };
+  
+
+  
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-12 flex justify-center">

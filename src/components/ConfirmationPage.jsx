@@ -127,14 +127,22 @@ import { useNavigate } from "react-router-dom";
             prepare for the journey ahead.
           </p>
 
-         <a
-  href="/resources/DesignDojoo-UI-Guide.pdf"
-  download
+        <button
+  onClick={() => {
+    const link = document.createElement("a");
+    link.href = "/resources/DesignDojoo-UI-Guide.pdf";
+    link.download = "DesignDojoo-UI-Guide.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }}
   className="w-full bg-black text-white py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-900"
 >
   <Download className="w-4 h-4" />
   Download Free Resource
-</a>
+</button>
+
+
 
         </div>
 
