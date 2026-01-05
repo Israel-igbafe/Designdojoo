@@ -25,13 +25,9 @@ useEffect(() => {
 }, []);
 
 const whatsappMessage = encodeURIComponent(
-  `I just applied to the DesignDojoo Product Experience Scholarship 🚀
-
-There are only ${slotsLeft} spots remaining.
-Join me — let’s stay accountable and grow together 👥✨
-
-https://www.designdojoo.com/`
+  "Hello DesignDojoo team 👋\nI'm interested in the Product Experience Scholarship and would like more details."
 );
+
 
 
   return (

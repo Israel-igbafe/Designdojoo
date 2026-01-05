@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
   export default function ConfirmationPage() {
   const navigate = useNavigate();
 
+  const slotsLeft = Number(localStorage.getItem("slotsLeft")) || 15;
+
+
   // ✅ ADD THIS
   const handleCopyLink = async () => {
     try {
@@ -17,10 +20,16 @@ import { useNavigate } from "react-router-dom";
   };
 
   const handleShareInvite = async () => {
+  const message = `I just applied to the DesignDojoo Product Experience Scholarship.
+There are only ${slotsLeft} spots remaining.
+
+Join me – let’s stay accountable and grow together
+https://www.designdojoo.com/`;
+
   const shareData = {
-    title: "DesignDojoo Scholarship",
-    text: "I just applied to the DesignDojoo Product Experience Scholarship. Join me — let’s stay accountable and grow together.",
-    url: window.location.origin,
+    title: "DesignDojoo Product Experience Scholarship",
+    text: message,
+    url: "https://www.designdojoo.com/",
   };
 
   if (navigator.share) {
@@ -30,13 +39,11 @@ import { useNavigate } from "react-router-dom";
       console.log("Share cancelled", err);
     }
   } else {
-    // Fallback (WhatsApp)
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
-      `${shareData.text} ${shareData.url}`
-    )}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   }
 };
+
 
 
   return (
@@ -78,14 +85,16 @@ import { useNavigate } from "react-router-dom";
   />
 
   <SocialIcon
-    icon={<Facebook />}
-    link="https://www.facebook.com/designdojoo"
-  />
+  icon={<Facebook />}
+  link="https://web.facebook.com/profile.php?id=61573099574018&sk=map"
+/>
+
 
   <SocialIcon
-    icon={<MessageCircle />}
-    link="https://wa.me/2349162682043"
-  />
+  icon={<MessageCircle />}
+  link="https://chat.whatsapp.com/EZnugdO99R5Hv5AEuKU6II"
+/>
+
 </div>
 
         </div>

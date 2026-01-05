@@ -1,8 +1,12 @@
 import { Check } from "lucide-react";
 import { Gift } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 function PricingSection() {
+  const navigate = useNavigate();
   return (
     <section className="bg-black py-28 px-6">
       <div className="max-w-6xl mx-auto text-center">
@@ -66,9 +70,25 @@ function PricingSection() {
             </ul>
 
             {/* Button */}
-            <button className="mt-8 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition">
-              Enroll Now
-            </button>
+           <button
+  onClick={() => navigate("/apply")}
+  className="
+    w-full
+    mt-8
+    bg-red-600
+    hover:bg-red-700
+    text-white
+    font-semibold
+    py-4
+    text-lg
+    rounded-xl
+    transition
+  "
+>
+  Enroll Now
+</button>
+
+
           </div>
 
           {/* PRODUCT MANAGEMENT TRACK */}
@@ -107,9 +127,25 @@ function PricingSection() {
             </ul>
 
             {/* Button */}
-            <button className="mt-8 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition">
-              Enroll Now
-            </button>
+            <button
+  onClick={() => navigate("/apply")}
+  className="
+    w-full
+    mt-8
+    bg-red-600
+    hover:bg-red-700
+    text-white
+    font-semibold
+    py-4
+    text-lg
+    rounded-xl
+    transition
+  "
+>
+  Enroll Now
+</button>
+
+
           </div>
 
         </div>

@@ -13,26 +13,16 @@ function HeroSection() {
   const navigate = useNavigate();
 
   const [slotsLeft, setSlotsLeft] = useState(15);
-
-useEffect(() => {
-  const storedSlots = localStorage.getItem("slotsLeft");
-
-  if (storedSlots) {
-    setSlotsLeft(Number(storedSlots));
-  } else {
-    localStorage.setItem("slotsLeft", 15);
-    setSlotsLeft(15);
-  }
+  useEffect(() => {
+  const storedSlots = Number(localStorage.getItem("slotsLeft")) || 15;
+  setSlotsLeft(storedSlots);
 }, []);
 
 
+
+
 const whatsappMessage = encodeURIComponent(
-  `I just applied to the DesignDojoo Product Experience Scholarship 🚀
-
-There are only ${slotsLeft} spots remaining.
-Join me — let’s stay accountable and grow together 👥✨
-
-https://www.designdojoo.com/`
+  "Hello DesignDojoo team 👋\nI'm interested in the Product Experience Scholarship and would like more details."
 );
 
 

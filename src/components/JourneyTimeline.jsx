@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Layers,
   Users,
@@ -91,15 +92,24 @@ function TimelineItem({
 
 
 function JourneyTimeline() {
+  const [slotsLeft, setSlotsLeft] = useState(15);
+
+  useEffect(() => {
+    const storedSlots = Number(localStorage.getItem("slotsLeft")) || 15;
+    setSlotsLeft(storedSlots);
+  }, []);
+
   return (
     <section className="bg-white py-24 px-6">
+
       <div className="max-w-6xl mx-auto relative">
 
         {/* Top Pills */}
         <div className="flex flex-col items-center mb-14">
           <span className="bg-red-100 text-red-600 text-xs font-semibold px-4 py-1 rounded-full mb-3">
-            ⏱ Only 15 Slots Left
-          </span>
+  ⏱ Only {slotsLeft} Slots Left
+</span>
+
           <span className="bg-gray-100 text-gray-700 text-xs font-medium px-4 py-1 rounded-full">
             8-Week Intensive Program
           </span>
