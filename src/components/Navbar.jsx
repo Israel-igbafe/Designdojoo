@@ -6,19 +6,25 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <img
-            src="/logo.svg"
-            alt="DesignDojo"
-            className="h-7 w-auto"
-          />
-          <span className="text-lg font-semibold text-gray-900">
-            DesignDojo
-          </span>
-        </Link>
+        <Link
+  to="/"
+  className="flex items-center gap-2 max-w-[150px] sm:max-w-none"
+>
+  <img
+    src="/logo.svg"
+    alt="DesignDojo"
+    className="h-6 w-6 sm:h-7 sm:w-auto"
+  />
+
+  <span className="text-sm sm:text-lg font-semibold text-gray-900 truncate">
+    DesignDojo
+  </span>
+</Link>
+
 
         {/* Navigation */}
-        <nav className="flex items-center gap-8">
+        <nav className="flex items-center gap-4 sm:gap-8">
+
           <a
             href="#program"
             className="text-sm font-medium text-gray-700 hover:text-gray-900 transition"
