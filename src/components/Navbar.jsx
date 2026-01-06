@@ -23,7 +23,7 @@ function Navbar() {
 
 
         {/* Navigation */}
-        <nav className="flex items-center gap-4 sm:gap-8">
+        <nav className="flex items-center gap-8">
 
           <a
             href="#program"
