@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
 
-function Navbar({ variant = "default" }) {
+function Navbar({ variant }) {
   return (
     <header className="w-full bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -26,13 +26,11 @@ function Navbar({ variant = "default" }) {
           </Link>
 
           {/* Conditional nav item */}
-          {variant === "merch" ? (
-            <ShoppingBag className="w-5 h-5 text-gray-700" />
-          ) : (
+          
             <a href="#faq" className="text-gray-700 hover:text-gray-900">
               FAQ
             </a>
-          )}
+          
 
           <Link
             to="/apply"

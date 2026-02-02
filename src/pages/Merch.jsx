@@ -137,7 +137,7 @@ function Merch() {
 
       {openCart && (
   <div className="fixed inset-0 bg-black/40 flex justify-end z-50">
-    <div className="bg-white w-full max-w-md h-full p-6 overflow-y-auto">
+    <div className="bg-white w-full max-w-md h-full p-6 overflow-y-auto fixed right-0 top-0">
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
