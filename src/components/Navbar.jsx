@@ -26,13 +26,7 @@ function Navbar({ hideFAQ = false }) {
           </Link>
 
           {/* Conditional nav item */}
-             {!hideFAQ && (
-
-             
-            <a href="#faq" className="text-gray-700 hover:text-gray-900">
-              FAQ
-            </a>
-             )}
+            
 
           <Link
             to="/apply"
