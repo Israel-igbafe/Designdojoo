@@ -41,7 +41,7 @@ function Merch() {
     <main className="bg-[#f8f7f5] min-h-screen">
 
       {/* Shared Navbar (with bag icon) */}
-      <Navbar variant="merch" />
+      <Navbar hideFAQ />
 
       {/* Merch Section */}
       <section className="max-w-7xl mx-auto px-6 py-16">

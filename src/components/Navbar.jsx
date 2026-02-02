@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
 
-function Navbar({ variant }) {
+function Navbar({ hideFAQ = false }) {
   return (
     <header className="w-full bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -26,11 +26,13 @@ function Navbar({ variant }) {
           </Link>
 
           {/* Conditional nav item */}
-          
+             {!hideFAQ && (
+
+             
             <a href="#faq" className="text-gray-700 hover:text-gray-900">
               FAQ
             </a>
-          
+             )}
 
           <Link
             to="/apply"
