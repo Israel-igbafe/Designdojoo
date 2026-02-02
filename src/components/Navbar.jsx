@@ -1,52 +1,42 @@
 import { Link } from "react-router-dom";
+import { ShoppingBag } from "lucide-react";
 
-function Navbar() {
+function Navbar({ variant = "default" }) {
   return (
     <header className="w-full bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-1 sm:gap-2">
-  <img
-    src="/logo.svg"
-    alt="DesignDojo"
-    className="h-6 sm:h-7 w-auto"
-  />
-  <span className="text-base sm:text-lg font-semibold text-gray-900 whitespace-nowrap">
-    DesignDojoo
-  </span>
-</Link>
-
-
+        <Link to="/" className="flex items-center gap-2">
+          <img src="/logo.svg" alt="DesignDojo" className="h-6 w-6" />
+          <span className="text-lg font-semibold text-gray-900">
+            DesignDojo
+          </span>
+        </Link>
 
         {/* Navigation */}
-        <nav className="flex items-center gap-4 sm:gap-8">
+        <nav className="flex items-center gap-8 text-sm font-medium">
 
-
-          <a
-            href="#program"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900 transition"
-          >
+          <a href="#program" className="text-gray-700 hover:text-gray-900">
             Program
           </a>
 
-          <a
-            href="#pricing"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900 transition"
-          >
-            Pricing
-          </a>
+          <Link to="/shop" className="text-gray-700 hover:text-gray-900">
+            Shop
+          </Link>
 
-          <a
-            href="#faq"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900 transition"
-          >
-            FAQ
-          </a>
+          {/* Conditional nav item */}
+          {variant === "merch" ? (
+            <ShoppingBag className="w-5 h-5 text-gray-700" />
+          ) : (
+            <a href="#faq" className="text-gray-700 hover:text-gray-900">
+              FAQ
+            </a>
+          )}
 
           <Link
             to="/apply"
-            className="ml-2 inline-flex items-center justify-center rounded-lg bg-red-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-700 transition"
+            className="inline-flex items-center justify-center rounded-lg bg-red-600 px-5 py-2.5 text-white hover:bg-red-700"
           >
             Apply Now
           </Link>

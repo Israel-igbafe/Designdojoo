@@ -12,6 +12,7 @@ import DontJustGraduateSection from "../components/DontJustGraduateSection";
 
 
 
+
 function LandingPage() {
   return (
     <div className="bg-white min-h-screen">
