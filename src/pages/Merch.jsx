@@ -53,7 +53,7 @@ function Merch() {
           Wear your craft. Premium apparel and accessories for modern builders.
         </p>
 
-        <div className="flex justify-end mb-6 relative">
+        <div className="fixed top-24 right-6 z-20">
   <button
     onClick={() => setOpenCart((prev) => !prev)}
     className="flex items-center gap-3 border border-red-200 px-4 py-2 rounded-lg text-sm font-medium"
