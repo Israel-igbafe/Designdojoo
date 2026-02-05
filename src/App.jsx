@@ -10,9 +10,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+         <Route path="/cohort3-scholarship" element={<LandingPage />} />
         <Route path="/apply" element={<RegistrationForm />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
-        <Route path="/cohort3-scholarship" element={<LandingPage />} />
         <Route path="/shop" element={<Merch />} /> {/* ✅ NEW */}
       </Routes>
     </BrowserRouter>
