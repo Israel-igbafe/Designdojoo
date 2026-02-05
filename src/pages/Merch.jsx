@@ -53,31 +53,121 @@ function Merch() {
           Wear your craft. Premium apparel and accessories for modern builders.
         </p>
 
-        <div className="flex justify-end mb-6">
+        <div className="flex justify-end mb-6 relative">
   <button
-  onClick={() => setOpenCart(true)}
-  className="flex items-center gap-3 border border-red-200 px-4 py-2 rounded-lg text-sm font-medium"
->
-  {/* Items count */}
-  <span>
-    {cart.length} {cart.length === 1 ? "Item" : "Items"}
-  </span>
+    onClick={() => setOpenCart((prev) => !prev)}
+    className="flex items-center gap-3 border border-red-200 px-4 py-2 rounded-lg text-sm font-medium"
+  >
+    <span>
+      {cart.length} {cart.length === 1 ? "Item" : "Items"}
+    </span>
 
-  {/* Cart icon AFTER count */}
-  <ShoppingBag className="w-4 h-4 text-red-600" />
+    <ShoppingBag className="w-4 h-4 text-red-600" />
 
-  <span className="text-gray-400">|</span>
+    <span className="text-gray-400">|</span>
 
-  {/* Total */}
-  <span className="font-semibold">
-    ₦{subtotal.toLocaleString()}
-  </span>
+    <span className="font-semibold">
+      ₦{subtotal.toLocaleString()}
+    </span>
 
-  {/* Dropdown arrow */}
-  <span className="text-red-600">▾</span>
-</button>
+    <span className="text-red-600">▾</span>
+  </button>
+
+  {openCart && (
+  <div className="absolute top-full right-0 mt-3 w-[380px] bg-white rounded-xl shadow-xl border border-gray-200 z-50">
+    <div className="p-6 max-h-[80vh] overflow-y-auto">
+
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-lg font-semibold">Your Cart</h2>
+        <button onClick={() => setOpenCart(false)}>✕</button>
+      </div>
+
+      {/* Cart items */}
+      <div className="space-y-4">
+        {cart.map((item, i) => (
+          <div
+            key={i}
+            className="flex gap-4 items-start border-b pb-4 relative"
+          >
+            <img
+              src={item.img}
+              alt={item.name}
+              className="w-16 h-16 rounded-md object-cover"
+            />
+
+            <div className="flex-1 relative">
+              <p className="text-sm font-medium text-gray-900">
+                {item.name}
+              </p>
+
+              <p className="text-sm text-gray-500">
+                {item.price}
+                <span className="inline-block ml-2 px-2 py-0.5 text-xs bg-gray-100 rounded">
+                  Qty: {item.qty}
+                </span>
+              </p>
+
+              <button
+                onClick={() => removeFromCart(item.name)}
+                className="absolute bottom-0 right-0 text-xs text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Summary */}
+      <div className="mt-6 border-t pt-4">
+        <div className="flex justify-between text-sm">
+          <span>Subtotal</span>
+          <span>₦{subtotal.toLocaleString()}</span>
+        </div>
+
+        <div className="flex justify-between font-semibold mt-2">
+          <span>Total</span>
+          <span className="text-red-600">
+            ₦{subtotal.toLocaleString()}
+          </span>
+        </div>
+      </div>
+
+      {/* WhatsApp */}
+      <div className="mt-6 bg-green-50 p-4 rounded-lg text-sm">
+        <p className="font-medium text-green-700">
+          Order via WhatsApp
+        </p>
+        <p className="text-green-600 text-xs mt-1">
+          Click below to send your order details via WhatsApp. We’ll confirm your order and share payment information.
+        </p>
+      </div>
+
+      {/* Actions */}
+      <div className="mt-6 flex gap-3">
+        <button
+          onClick={() => setOpenCart(false)}
+          className="flex-1 rounded-lg bg-black py-3 text-sm font-semibold text-white hover:bg-gray-900 transition"
+        >
+          Continue Shopping
+        </button>
+
+        <a
+          href="https://wa.me/2349162682043"
+          target="_blank"
+          className="flex-1 rounded-lg bg-red-600 py-3 text-sm font-semibold text-white text-center hover:bg-red-700 transition"
+        >
+          Order on WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </div>
+)}
 
 </div>
+
 
 
         {/* Products grid */}
@@ -135,102 +225,7 @@ function Merch() {
       {/* Shared Footer */}
       <Footer />
 
-      {openCart && (
-  <div className="fixed inset-0 bg-black/40 flex justify-end z-50">
-    <div className="bg-white w-full max-w-md h-full p-6 overflow-y-auto fixed right-0 top-0">
-
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold">Your Cart</h2>
-        <button onClick={() => setOpenCart(false)}>✕</button>
-      </div>
-
-      {/* Cart items */}
-      <div className="space-y-4">
-       {cart.map((item, i) => (
-  <div
-    key={i}
-    className="flex gap-4 items-start border-b pb-4 relative"
-  >
-    {/* Product image */}
-    <img
-      src={item.img}
-      alt={item.name}
-      className="w-16 h-16 rounded-md object-cover"
-    />
-
-    {/* Product info */}
-    <div className="flex-1 relative">
-      <p className="text-sm font-medium text-gray-900">
-        {item.name}
-      </p>
-
-      <p className="text-sm text-gray-500">{item.price}
-       <span className="inline-block mt-1 px-2 py-0.5 text-xs bg-gray-100 rounded">
-        Qty: {item.qty}
-       </span>
-      </p>
-
-
-      {/* Remove — pinned bottom right */}
-      <button
-        onClick={() => removeFromCart(item.name)}
-        className="absolute bottom-0 right-0 text-xs text-red-500 hover:underline"
-      >
-        Remove
-      </button>
-    </div>
-  </div>
-))}
-
-      </div>
-
-      {/* Summary */}
-      <div className="mt-6 border-t pt-4">
-        <div className="flex justify-between text-sm">
-          <span>Subtotal</span>
-          <span>₦{subtotal.toLocaleString()}</span>
-        </div>
-
-        <div className="flex justify-between font-semibold mt-2">
-          <span>Total</span>
-          <span className="text-red-600">
-            ₦{subtotal.toLocaleString()}
-          </span>
-        </div>
-      </div>
-
-      {/* WhatsApp */}
-      <div className="mt-6 bg-green-50 p-4 rounded-lg text-sm">
-        <p className="font-medium text-green-700">
-          Order via WhatsApp
-        </p>
-        <p className="text-green-600 text-xs mt-1">
-          Click below to send your order details via WhatsApp. We"ll confirm your order and share payment information.
-        </p>
-      </div>
-
-      {/* Actions */}
-      <div className="mt-6 flex gap-3">
-  <button
-    onClick={() => setOpenCart(false)}
-    className="flex-1 rounded-lg bg-black py-3 text-sm font-semibold text-white hover:bg-gray-900 transition"
-  >
-    Continue Shopping
-  </button>
-
-  <a
-    href="https://wa.me/2349162682043"
-    target="_blank"
-    className="flex-1 rounded-lg bg-red-600 py-3 text-sm font-semibold text-white text-center hover:bg-red-700 transition"
-  >
-    Order on WhatsApp
-  </a>
-</div>
-
-    </div>
-  </div>
-)}
+     
 
     </main>
   );
