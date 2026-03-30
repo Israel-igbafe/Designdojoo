@@ -276,7 +276,6 @@ function RegistrationForm() {
               <option>Facebook</option>
               <option>WhatsApp</option>
               <option>Friend</option>
-              <option>Aligntraits</option>
               <option>Others</option>
             </select>
           </div>
