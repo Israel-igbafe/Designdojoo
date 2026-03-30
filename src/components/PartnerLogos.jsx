@@ -13,12 +13,8 @@ function PartnerLogos() {
             alt="Pediforte"
             className="h-8 md:h-10 object-contain"
           />
-
-          <img
-            src="/images/partners/aligntraits.svg"
-            alt="AlignTraits"
-            className="h-8 md:h-10 object-contain"
-          />
+  
+          
         </div>
       </div>
     </section>
