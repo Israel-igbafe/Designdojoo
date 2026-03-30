@@ -131,11 +131,7 @@ function DontJustGraduateSection() {
   className="h-6 object-contain opacity-80"
 />
 
-<img
-  src="/images/partners/aligntraits.svg"
-  alt="AlignTraits"
-  className="h-6 object-contain opacity-80"
-/>
+
 
             </div>
 
