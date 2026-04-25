@@ -84,7 +84,7 @@ export default async function handler(req, res) {
     }
 
     const submission = validation.data;
-    const { data, error } = await supabase.rpc("submit_application_and_update_slots", {
+   const { data, error } = await supabase.rpc("submit_application_with_slot", {
       p_full_name: submission.full_name,
       p_email: submission.email,
       p_phone: submission.phone,
