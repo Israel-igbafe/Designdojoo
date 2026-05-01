@@ -369,7 +369,7 @@ function RegistrationForm() {
   Terms of Service
 </Link>{" "}
   and{" "}
-  <span className="cursor-pointer hover:text-gray-700">
+  <span className="hover:text-gray-700">
     Privacy Policy
   </span>.
 </p>
