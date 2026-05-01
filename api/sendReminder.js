@@ -209,7 +209,7 @@ export default async function handler(req, res) {
       ${today}
     </p>
 
-    <p>Dear <strong>${recipientName}</strong>,</p>
+    <p>Dear <strong>${user.full_name}</strong>,</p>
 
     <h3 style="text-align:center;">CONGRATULATIONS</h3>
 
