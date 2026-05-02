@@ -250,7 +250,7 @@ export default async function handler(req, res) {
         box-sizing:border-box;
         text-align:center;
         border-radius:4px;">
-        Pay expected fee
+        Secure My spot
       </a>
     </div>
 
