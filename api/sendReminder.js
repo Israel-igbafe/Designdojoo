@@ -15,7 +15,7 @@ const REMINDER_EMAIL_FROM =
 
 const REMINDER_SUBJECT =
   process.env.REMINDER_EMAIL_SUBJECT ||
-  "It's Been 24 Hours Since You Registered";
+  "Congratulations! Your Scholarship award 🎓;
 
 const DEFAULT_CUTOFF_HOURS = Number(process.env.REMINDER_CUTOFF_HOURS || 24);
 const MINIMUM_CUTOFF_HOURS = 24;
