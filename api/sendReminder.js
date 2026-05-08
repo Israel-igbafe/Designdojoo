@@ -211,75 +211,83 @@ export default async function handler(req, res) {
 
     <p>Dear <strong>${user.full_name}</strong>,</p>
 
-    <h3 style="text-align:center;">CONGRATULATIONS</h3>
+    <h3 style="text-align:center;">SCHOLARSHIP ADMISSION OFFER</h3>
 
-    <p>
-      We have reviewed your application for the 
-      <strong>DesignDojoo 8-Week Product Experience Track.</strong>
-    </p>
+<p>
+  Dear <strong>#Username</strong>,
+</p>
 
-    <p>
-      Your answers stood out to our review team. Because you showed
-      a clear readiness to learn and execute, we have decided to
-      select you for this cohort.
-    </p>
+<p>
+  We saw your application come through our partnership with
+  <strong>Aligntraits.</strong>
+</p>
 
-    <p><strong>Scholarship Decision: APPROVED</strong></p>
+<p>
+  Because of this partnership, your application was fast-tracked.
+  We are impressed by your drive to become a world-class
+  UI Designer / Product Manager, and we want to remove every
+  barrier to your entry.
+</p>
 
-    <p>
-      Congratulations! You’ve been selected from a handful of people.
-      Over 2000+ people applied, and you’ve been chosen as part of the
-      select group because your answer stood out to us.
-    </p>
+<p>
+  <strong>Scholarship Decision: DISTINCTION (75% COVERED)</strong>
+</p>
 
-    <p>
-      As part of our mission to accelerate serious talent,
-      we have waived <strong>50% of your tuition fee.</strong>
-    </p>
+<p>
+  You have been awarded our highest tier Partner Scholarship.
+</p>
 
-    <div style="text-align:center; margin:30px 0;">
-      <a href="https://designdojoo.com/sales"
-      style="
-        background:#e50914;
-        color:#ffffff;
-        padding:14px 28px;
-        text-decoration:none;
-        font-weight:bold;
-        display:block;
-        width:100%;
-        box-sizing:border-box;
-        text-align:center;
-        border-radius:4px;">
-        Secure My spot
-      </a>
-    </div>
+<ul style="padding-left:20px; line-height:1.8;">
+  <li><strong>Original Tuition:</strong> ₦83,659</li>
+  <li><strong>Paid Scholarship Fee:</strong> ₦62,744</li>
+  <li><strong>Expected Fee:</strong> ₦20,915</li>
+</ul>
 
-    <p>
-      <strong>Secure Your Seat:</strong> Since we have limited spots for
-      this cohort, this scholarship offer is valid for
-      <strong>72 hours.</strong>
-    </p>
+<div style="text-align:center; margin:30px 0;">
+  <a href="https://designdojoo.com/sales"
+  style="
+    background:#e50914;
+    color:#ffffff;
+    padding:14px 28px;
+    text-decoration:none;
+    font-weight:bold;
+    display:block;
+    width:100%;
+    box-sizing:border-box;
+    text-align:center;
+    border-radius:4px;">
+    Pay Expected Fee
+  </a>
+</div>
 
-    <p>
-      Congratulations on being selected. We are ready to build
-      your portfolio.
-    </p>
+<p>
+  <strong>Secure Your Seat:</strong>
+  This exclusive rate is reserved for Aligntraits community members
+  and expires in <strong>72 hours.</strong>
+</p>
 
-    <p>Best regards,</p>
+<p>
+  Congratulations on being selected.
+  We are ready to build your portfolio.
+</p>
 
-    <br/>
+<p>Best regards,</p>
 
-    <p><strong>Mr. A O. Samuel</strong><br/>
-    DesignDojoo’s Director</p>
+<br/>
 
-    <br/>
+<p>
+  <strong>Mr. A. O. Samuel.</strong><br/>
+  Designdojoo’s Principal
+</p>
 
-    <p style="font-size:12px; color:#999;">
-      Design Dojo Institute • Lagos, Nigeria<br/>
-      Admission ID: #DD-2026-892
-    </p>
+<br/>
 
-  </div>
+<p style="font-size:12px; color:#999;">
+  Design Dojo Institute • Lagos, Nigeria<br/>
+  Admission ID: #JD-2024-892 • Valid until Month 30, 2024
+</p>
+
+</div>
 </div>
           `,
         });
