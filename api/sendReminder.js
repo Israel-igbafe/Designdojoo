@@ -209,13 +209,11 @@ export default async function handler(req, res) {
       ${today}
     </p>
 
-    <p>Dear <strong>${user.full_name}</strong>,</p>
-
     <h3 style="text-align:center;">SCHOLARSHIP ADMISSION OFFER</h3>
 
-<p>
-  Dear <strong>#Username</strong>,
-</p>
+
+  <p>Dear <strong>${recipientName}</strong>,</p>
+
 
 <p>
   We saw your application come through our partnership with
