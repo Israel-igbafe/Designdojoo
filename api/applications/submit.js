@@ -125,13 +125,30 @@ export default async function handler(req, res) {
       return;
     }
 
-    const result = Array.isArray(data) ? data[0] : data;
+   const result = Array.isArray(data) ? data[0] : data;
 
     sendJson(res, 201, {
       ok: true,
       application_id: result?.application_id ?? null,
       slots_left: result?.slots_left ?? null,
     });
+
+    // Trigger email immediately after successful registration
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://designdojoo.com";
+      await fetch(`${baseUrl}/api/sendReminder`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.REMINDER_ADMIN_API_KEY || "",
+        },
+        body: JSON.stringify({ cutoff_hours: 0 }),
+      });
+    } catch (emailError) {
+      // Don't fail the registration if email trigger fails
+      console.error("Email trigger failed:", emailError.message);
+    }
+
   } catch (error) {
     sendJson(res, 500, {
       ok: false,
