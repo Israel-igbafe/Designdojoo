@@ -18,7 +18,7 @@ const REMINDER_SUBJECT =
   "Congratulations! Your Scholarship award 🎓";
 
 const DEFAULT_CUTOFF_HOURS = Number(process.env.REMINDER_CUTOFF_HOURS || 24);
-const MINIMUM_CUTOFF_HOURS = 24;
+const MINIMUM_CUTOFF_HOURS = 0;
 const DEFAULT_LIMIT = Number(process.env.REMINDER_LIMIT || 100);
 const CRON_SECRET = process.env.CRON_SECRET || "";
 
@@ -93,14 +93,14 @@ export default async function handler(req, res) {
   const cutoffHours = resolveNumber(
     payload.cutoff_hours,
     DEFAULT_CUTOFF_HOURS,
-    MINIMUM_CUTOFF_HOURS,
+    0,
     168
   );
-  const normalizedCutoffHours = Math.max(cutoffHours, MINIMUM_CUTOFF_HOURS);
+ 
   const limit = resolveNumber(payload.limit, DEFAULT_LIMIT, 1, 500);
 
   const cutoffIso = new Date(
-    Date.now() - normalizedCutoffHours * 60 * 60 * 1000
+    Date.now() - cutoffHours * 60 * 60 * 1000
   ).toISOString();
 
   try {
