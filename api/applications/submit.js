@@ -135,7 +135,7 @@ export default async function handler(req, res) {
 
     // Trigger email immediately after successful registration
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://designdojoo.com";
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.designdojoo.com";
       await fetch(`${baseUrl}/api/sendReminder`, {
         method: "POST",
         headers: {
