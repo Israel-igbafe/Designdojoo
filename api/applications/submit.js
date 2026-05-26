@@ -9,6 +9,7 @@ import {
 import { enforceRateLimit } from "../_lib/rateLimit.js";
 import { getSupabaseAdmin } from "../_lib/supabaseAdmin.js";
 import { validateApplicationPayload } from "../_lib/validation.js";
+import { Resend } from "resend";
 
 const APPLICATION_LIMIT = Number(process.env.APPLICATION_RATE_LIMIT || 5);
 const APPLICATION_WINDOW_MINUTES = Number(
@@ -84,7 +85,7 @@ export default async function handler(req, res) {
     }
 
     const submission = validation.data;
-   const { data, error } = await supabase.rpc("submit_application_with_slot", {
+    const { data, error } = await supabase.rpc("submit_application_with_slot", {
       p_full_name: submission.full_name,
       p_email: submission.email,
       p_phone: submission.phone,
@@ -125,7 +126,7 @@ export default async function handler(req, res) {
       return;
     }
 
-   const result = Array.isArray(data) ? data[0] : data;
+    const result = Array.isArray(data) ? data[0] : data;
 
     sendJson(res, 201, {
       ok: true,
@@ -133,20 +134,57 @@ export default async function handler(req, res) {
       slots_left: result?.slots_left ?? null,
     });
 
-    // Trigger email immediately after successful registration
+    // Send email directly via Resend
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.designdojoo.com";
-      await fetch(`${baseUrl}/api/sendReminder`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": process.env.REMINDER_ADMIN_API_KEY || "",
-        },
-        body: JSON.stringify({ cutoff_hours: 0 }),
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const recipientName = submission.full_name || "there";
+      const today = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }).format(new Date());
+
+      await resend.emails.send({
+        from: process.env.REMINDER_EMAIL_FROM || "DesignDojoo <noreply@designdojoo.com>",
+        to: submission.email,
+        subject: process.env.REMINDER_EMAIL_SUBJECT || "Congratulations! Your Scholarship award 🎓",
+        html: `
+<div style="font-family: Arial, sans-serif; background:#f5f5f5; padding:40px;">
+  <div style="max-width:500px; margin:auto; background:#ffffff; padding:40px; border-radius:6px;">
+    <div style="text-align:center;">
+      <img src="https://designdojoo.com/logo.svg" width="120"/>
+      <h2 style="margin:10px 0 0 0;">DesignDojoo Institute</h2>
+      <p style="color:#777; font-size:14px;">School of Product Design</p>
+    </div>
+    <p style="text-align:right; font-size:14px; color:#777;">${today}</p>
+    <h3 style="text-align:center;">SCHOLARSHIP ADMISSION OFFER</h3>
+    <p>Dear <strong>${recipientName}</strong>,</p>
+    <p>We saw your application come through our partnership with <strong>Aligntraits.</strong></p>
+    <p>Because of this partnership, your application was fast-tracked. We are impressed by your drive to become a world-class UI Designer / Product Manager, and we want to remove every barrier to your entry.</p>
+    <p><strong>Scholarship Decision: DISTINCTION (75% COVERED)</strong></p>
+    <p>You have been awarded our highest tier Partner Scholarship.</p>
+    <ul style="padding-left:20px; line-height:1.8;">
+      <li><strong>Original Tuition:</strong> ₦83,659</li>
+      <li><strong>Paid Scholarship Fee:</strong> ₦62,744</li>
+      <li><strong>Expected Fee:</strong> ₦20,915</li>
+    </ul>
+    <div style="text-align:center; margin:30px 0;">
+      <a href="https://designdojoo.com/sales" style="background:#e50914;color:#ffffff;padding:14px 28px;text-decoration:none;font-weight:bold;display:block;width:100%;box-sizing:border-box;text-align:center;border-radius:4px;">
+        Secure My Spot
+      </a>
+    </div>
+    <p><strong>Secure Your Seat:</strong> This exclusive rate is reserved for Aligntraits community members and expires in <strong>72 hours.</strong></p>
+    <p>Congratulations on being selected. We are ready to build your portfolio.</p>
+    <p>Best regards,</p>
+    <br/>
+    <p><strong>Mr. A. O. Samuel.</strong><br/>Designdojoo's Principal</p>
+    <br/>
+    <p style="font-size:12px; color:#999;">Design Dojo Institute • Lagos, Nigeria<br/>Admission ID: #JD-2024-892 • Valid until Month 30, 2024</p>
+  </div>
+</div>`,
       });
     } catch (emailError) {
-      // Don't fail the registration if email trigger fails
-      console.error("Email trigger failed:", emailError.message);
+      console.error("Email send failed:", emailError.message);
     }
 
   } catch (error) {
