@@ -17,7 +17,8 @@ const REMINDER_SUBJECT =
   process.env.REMINDER_EMAIL_SUBJECT ||
   "Congratulations! Your Scholarship award 🎓";
 
-const DEFAULT_CUTOFF_HOURS = Number(process.env.REMINDER_CUTOFF_HOURS || 24);
+// const DEFAULT_CUTOFF_HOURS = Number(process.env.REMINDER_CUTOFF_HOURS || 24);
+const DEFAULT_CUTOFF_HOURS = 0;
 const MINIMUM_CUTOFF_HOURS = 0;
 const DEFAULT_LIMIT = Number(process.env.REMINDER_LIMIT || 100);
 const CRON_SECRET = process.env.CRON_SECRET || "";
@@ -96,7 +97,7 @@ export default async function handler(req, res) {
     0,
     168
   );
- 
+
   const limit = resolveNumber(payload.limit, DEFAULT_LIMIT, 1, 500);
 
   const cutoffIso = new Date(

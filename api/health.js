@@ -1,6 +1,8 @@
 import { handleCorsPreflight, sendJson, setCorsHeaders } from "./_lib/http.js";
 import { getSupabaseAdmin, hasSupabaseAdminConfig } from "./_lib/supabaseAdmin.js";
 
+// todo: add db_reachable check
+
 export default async function handler(req, res) {
   if (handleCorsPreflight(req, res)) {
     return;
@@ -18,7 +20,7 @@ export default async function handler(req, res) {
 
   const checks = {
     env_configured: hasSupabaseAdminConfig(),
-    db_reachable: false,
+    // db_reachable: false,
   };
 
   if (!checks.env_configured) {
