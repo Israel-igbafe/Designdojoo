@@ -237,9 +237,8 @@ function RegistrationForm() {
 
   <div className="space-y-3">
     {[
-      "Combined Scholarship (UI/UX + PM) – 8 Weeks",
-      "UI/UX Design Only – 8 Weeks",
-      "Product Management Only – 8 Weeks",
+      "UI/UX Design Scholarship – 8 Weeks",
+      "Product Management Scholarship – 8 Weeks",
     ].map((option) => (
       <label
         key={option}
