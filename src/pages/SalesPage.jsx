@@ -120,8 +120,16 @@ function useCountdown(targetDate) {
 
 /* ─── MAIN COMPONENT ──────────────────────────────────────── */
 function SalesPage() {
-  // 72 hours from when the page first loads
-  const [target] = useState(() => Date.now() + 72 * 60 * 60 * 1000);
+  // Persist deadline in localStorage — clock starts on first visit (email link click)
+  // and survives page refreshes.
+  const [target] = useState(() => {
+    const KEY = "designdojoo_deadline";
+    const stored = localStorage.getItem(KEY);
+    if (stored) return Number(stored);
+    const deadline = Date.now() + 72 * 60 * 60 * 1000;
+    localStorage.setItem(KEY, String(deadline));
+    return deadline;
+  });
   const { hours, minutes, seconds } = useCountdown(target);
 
   const pad = (n) => String(n).padStart(2, "0");
@@ -455,10 +463,87 @@ function SalesPage() {
         </div>
       </section>
 
-      {/* White footer override */}
-      <div className="[&_footer]:bg-white [&_footer]:text-gray-900 [&_a]:text-gray-700 [&_p]:text-gray-600 [&_span]:text-gray-600 [&_svg]:text-gray-700">
-        <Footer />
-      </div>
+      {/* ── INLINE FOOTER (white, matches Figma) ─────────────── */}
+      <footer className="bg-white text-gray-900">
+        <div className="max-w-6xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-3 gap-10">
+
+          {/* LEFT — logo + tagline + socials */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73.12 41.73" className="h-8 w-auto">
+                <path fill="#0d090a" d="M39.48,6.05c4-4.26,10-5.57,15.59-5.34L71.92.06l1.2,0V41.62c-7.25.16-14.25.11-21.47.06A21,21,0,0,1,34.07,31.1c-3.91-5.57-.93-13.74-6.34-18.35C22.58,8.43,15.25,10.52,9,10.15L10.15,9V32.71c0,.15-1.09-1.17-1.09-1.14l10.3.62a12.09,12.09,0,0,0,9.45-2.8c-1.61,2.73-6.18,4.09-9.45,4.07-.48,0-11.4.53-11.57.51V7.79C13.26,8,19,7.11,24.43,8.32c5.49,1.46,9.27,7,9.26,12.51a19.68,19.68,0,0,0,2.44,9.11,18.61,18.61,0,0,0,15.61,9.38c6.63,0,13.53.09,20.13,0l-1.11,1.18V1.24S72,2.44,71.92,2.42L55.1,1.89c-5.68-.59-11.26.2-15.62,4.16Z"/>
+                <path fill="#b41f24" d="M33.64,35.68c-4,4.26-10,5.57-15.59,5.34L1.2,41.66l-1.2,0V.11C7.25,0,14.25,0,21.47.05A21,21,0,0,1,39.05,10.62C43,16.19,40,24.36,45.39,29c5.15,4.32,12.48,2.22,18.75,2.6L63,32.76V9c0-.15,1.09,1.18,1.1,1.15l-10.3-.67a12.15,12.15,0,0,0-9.51,2.78,12.77,12.77,0,0,1,9.51-4c.46,0,11.42-.58,11.56-.56V33.94c-5.46-.16-11.19.68-16.64-.53-5.48-1.46-9.27-7-9.25-12.51A19.88,19.88,0,0,0,37,11.78,18.61,18.61,0,0,0,21.37,2.41c-6.62-.05-13.53-.09-20.13,0L2.36,1.26V40.48S1.13,39.28,1.2,39.3L18,39.84c5.68.59,11.26-.21,15.62-4.16Z"/>
+              </svg>
+              <span className="text-xl font-bold text-gray-900 tracking-tight">DesignDojoo</span>
+            </div>
+            <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
+              Transforming aspiring designers and product managers into industry-ready professionals through accountability, real projects, and career support.
+            </p>
+            {/* Social icons */}
+            <div className="flex items-center gap-4 pt-1">
+              {/* Instagram */}
+              <a href="#" aria-label="Instagram" className="text-gray-500 hover:text-gray-900 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <circle cx="12" cy="12" r="4"/>
+                  <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+                </svg>
+              </a>
+              {/* Twitter/X */}
+              <a href="#" aria-label="Twitter" className="text-gray-500 hover:text-gray-900 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+              {/* LinkedIn */}
+              <a href="#" aria-label="LinkedIn" className="text-gray-500 hover:text-gray-900 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/>
+                  <circle cx="4" cy="4" r="2"/>
+                </svg>
+              </a>
+              {/* Email */}
+              <a href="#" aria-label="Email" className="text-gray-500 hover:text-gray-900 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0l-9.75 6.75L2.25 6.75"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* MIDDLE — Program links */}
+          <div>
+            <h4 className="font-bold text-gray-900 mb-4 text-sm tracking-wide uppercase">Program</h4>
+            <ul className="space-y-3">
+              {["UI Design Track", "PM Track", "Curriculum", "Scholarship"].map((item) => (
+                <li key={item}>
+                  <a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{item}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* RIGHT — Resources links */}
+          <div>
+            <h4 className="font-bold text-gray-900 mb-4 text-sm tracking-wide uppercase">Resources</h4>
+            <ul className="space-y-3">
+              {["Blog", "FAQ", "Contact Us", "Privacy Policy"].map((item) => (
+                <li key={item}>
+                  <a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{item}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-gray-200">
+          <p className="text-center text-xs text-gray-400 py-5">
+            © 2025 DesignDojoo. All rights reserved.
+          </p>
+        </div>
+      </footer>
 
     </main>
   );
