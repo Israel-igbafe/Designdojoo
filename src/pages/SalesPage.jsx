@@ -119,10 +119,22 @@ function useCountdown(targetDate) {
 
 /* ─── MAIN COMPONENT ──────────────────────────────────────── */
 function SalesPage() {
+  // Read the user's name from the URL: /sales?name=Alex
+  // Falls back to "Chief" if no name param is present.
+  const [userName] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get("name") || "";
+    // Capitalise first letter of each word, strip any unsafe characters
+    return raw
+      ? raw.replace(/[^a-zA-Z\s'-]/g, "").trim().replace(/\b\w/g, (c) => c.toUpperCase()) || "Chief"
+      : "Chief";
+  });
+
   // Persist deadline in localStorage — clock starts on first visit (email link click)
-  // and survives page refreshes.
+  // and survives page refreshes. Keyed per user so two users on the same browser
+  // don't share a deadline.
   const [target] = useState(() => {
-    const KEY = "designdojoo_deadline";
+    const KEY = `designdojoo_deadline_${userName}`;
     const stored = localStorage.getItem(KEY);
     if (stored) return Number(stored);
     const deadline = Date.now() + 72 * 60 * 60 * 1000;
@@ -151,7 +163,7 @@ function SalesPage() {
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
           Welcome to the Inside,{" "}
-          <span className="text-red-500">Alex.</span>
+          <span className="text-red-500">{userName}.</span>
           <br />
           Let's Get to Work.
         </h1>
@@ -312,7 +324,7 @@ function SalesPage() {
           Complete Your Enrollment Before Time Runs Out
         </h2>
         <p className="text-gray-400 mt-2 text-sm">
-          Before your seat is reversed, <span className="text-red-500 font-medium">Alex.</span>
+          Before your seat is reversed, <span className="text-red-500 font-medium">{userName}.</span>
         </p>
 
         {/* TIMER DISPLAY */}
@@ -336,7 +348,7 @@ function SalesPage() {
       <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-10 text-center">
         <h2 className="text-2xl sm:text-3xl font-bold text-white">
           Your Seat is Reserved,{" "}
-          <span className="text-red-500">Alex.</span>
+          <span className="text-red-500">{userName}.</span>
         </h2>
         <p className="text-gray-400 mt-2 text-sm">
           Your scholarship has been applied. Complete your enrollment before the timer expires.
