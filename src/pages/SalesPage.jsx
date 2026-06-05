@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FiUsers, FiBookOpen, FiChevronDown, FiChevronUp } from "react-icons/fi";
@@ -100,12 +100,39 @@ function WeekAccordion({ weekNum, level, phase, children, defaultOpen = false })
   );
 }
 
+/* ─── COUNTDOWN HOOK ──────────────────────────────────────── */
+function useCountdown(targetDate) {
+  const calc = () => {
+    const diff = Math.max(0, targetDate - Date.now());
+    return {
+      hours:   Math.floor(diff / 1000 / 3600),
+      minutes: Math.floor((diff / 1000 / 60) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+    };
+  };
+  const [time, setTime] = useState(calc);
+  useEffect(() => {
+    const id = setInterval(() => setTime(calc()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
+
 /* ─── MAIN COMPONENT ──────────────────────────────────────── */
 function SalesPage() {
+  // 72 hours from when the page first loads
+  const [target] = useState(() => Date.now() + 72 * 60 * 60 * 1000);
+  const { hours, minutes, seconds } = useCountdown(target);
+
+  const pad = (n) => String(n).padStart(2, "0");
+
   return (
     <main className="bg-black min-h-screen text-white">
 
-      <Navbar />
+      {/* Dark navbar override */}
+      <div className="[&_nav]:bg-black [&_nav]:border-b [&_nav]:border-gray-800 [&_a]:text-white [&_button]:text-white [&_svg]:text-white">
+        <Navbar />
+      </div>
 
       {/* HERO */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
@@ -295,9 +322,9 @@ function SalesPage() {
 
         {/* TIMER DISPLAY */}
         <div className="flex justify-center gap-3 sm:gap-4 mt-8">
-          {[["70", "Hours"], ["59", "Minutes"], ["38", "Seconds"]].map(([val, label]) => (
+          {[[pad(hours), "Hours"], [pad(minutes), "Minutes"], [pad(seconds), "Seconds"]].map(([val, label]) => (
             <div key={label} className="flex flex-col items-center">
-              <div className="bg-gray-900 border border-gray-700 rounded-lg w-16 sm:w-20 h-16 sm:h-20 flex items-center justify-center">
+              <div className="bg-gray-900 border border-gray-700 rounded-lg w-16 sm:w-20 h-16 sm:h-20 flex items-center justify-center tabular-nums">
                 <span className="text-2xl sm:text-3xl font-bold text-white">{val}</span>
               </div>
               <span className="text-xs text-gray-500 mt-2">{label}</span>
@@ -428,7 +455,10 @@ function SalesPage() {
         </div>
       </section>
 
-      <Footer />
+      {/* White footer override */}
+      <div className="[&_footer]:bg-white [&_footer]:text-gray-900 [&_a]:text-gray-700 [&_p]:text-gray-600 [&_span]:text-gray-600 [&_svg]:text-gray-700">
+        <Footer />
+      </div>
 
     </main>
   );
