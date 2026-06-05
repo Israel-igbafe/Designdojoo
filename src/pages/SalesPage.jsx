@@ -224,34 +224,16 @@ function SalesPage() {
 
         {/* WEEK 4 */}
         <WeekAccordion weekNum="4" level="Intermediate" phase="Build Phase">
-          <SplitWeekContent
-            leftSessions={[
-              { day: 1, title: "Project 2 Pairing", subtitle: "EduTech / Prize Money", track: "UI DESIGN", Icon: HiOutlineRocketLaunch },
-              { day: 2, title: "Project 2 Mentor Review", track: "UI DESIGN", Icon: FiStar },
-              { day: 3, title: "Showcase / Feedback", track: "UI DESIGN", Icon: HiOutlineTrophy },
-            ]}
-            rightSessions={[
-              { day: 1, title: "Project 1 Pairing", subtitle: "E-commerce / Business Portfolio", track: "PM TRACK", Icon: HiOutlineRocketLaunch },
-              { day: 2, title: "Project 1 Mentor Review", track: "PM TRACK", Icon: FiStar },
-              { day: 3, title: "Showcase / Feedback", track: "PM TRACK", Icon: HiOutlineTrophy },
-            ]}
-          />
+          <SessionRow day={1} title="Project 2 Pairing" subtitle="EduTech / Prize Money" track="JOINT" Icon={HiOutlineRocketLaunch} />
+          <SessionRow day={2} title="Project 2 Mentor Review" track="JOINT" Icon={FiStar} />
+          <SessionRow day={3} title="Showcase / Feedback" track="JOINT" Icon={HiOutlineTrophy} />
         </WeekAccordion>
 
         {/* WEEK 5 */}
         <WeekAccordion weekNum="5" level="Professional" phase="Build Phase">
-          <SplitWeekContent
-            leftSessions={[
-              { day: 1, title: "Project 3 Re-Pairing", subtitle: "Fin-Tech / Prize Money", track: "UI DESIGN", Icon: HiOutlineRocketLaunch },
-              { day: 2, title: "Project 1 Mentor Review", track: "UI DESIGN", Icon: FiStar },
-              { day: 3, title: "Showcase / Feedback", track: "UI DESIGN", Icon: HiOutlineTrophy },
-            ]}
-            rightSessions={[
-              { day: 1, title: "Project 2 Pairing", subtitle: "EduTech / Prize Money", track: "PM TRACK", Icon: HiOutlineRocketLaunch },
-              { day: 2, title: "Project 2 Mentor Review", track: "PM TRACK", Icon: FiStar },
-              { day: 3, title: "Showcase / Feedback", track: "PM TRACK", Icon: HiOutlineTrophy },
-            ]}
-          />
+          <SessionRow day={1} title="Project 3 Re-Pairing" subtitle="Fin-Tech / Prize Money" track="JOINT" Icon={HiOutlineRocketLaunch} />
+          <SessionRow day={2} title="Project 1 Mentor Review" track="JOINT" Icon={FiStar} />
+          <SessionRow day={3} title="Showcase / Feedback" track="JOINT" Icon={HiOutlineTrophy} />
         </WeekAccordion>
 
         {/* WEEK 6 */}
