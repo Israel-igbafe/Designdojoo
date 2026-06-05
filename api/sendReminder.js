@@ -210,37 +210,37 @@ export default async function handler(req, res) {
       ${today}
     </p>
 
-    <h3 style="text-align:center;">SCHOLARSHIP ADMISSION OFFER</h3>
+    <h3 style="text-align:center;">CONGRATULATIONS</h3>
 
 
   <p>Dear <strong>${recipientName}</strong>,</p>
 
 
 <p>
-  We saw your application come through our partnership with
-  <strong>Aligntraits.</strong>
+  We have reviewed your application for the 
+  <strong>DesignDojoo 8-Week Product Experience Track.</strong>
 </p>
 
 <p>
-  Because of this partnership, your application was fast-tracked.
-  We are impressed by your drive to become a world-class
-  UI Designer / Product Manager, and we want to remove every
-  barrier to your entry.
+ Your answers regarding <strong>"What is the ONE thing blocking your career growth right now?"</strong> 
+ stood out to our reviwe team. Because you showed a clear readiness to 
+ learn and execute, we have decided to select you for this cohort.
 </p>
 
 <p>
-  <strong>Scholarship Decision: DISTINCTION (75% COVERED)</strong>
+  <strong>Scholarship Decision: APPROVED</strong>
 </p>
 
 <p>
-  You have been awarded our highest tier Partner Scholarship.
+  Congratulations! You've been selected from a handful of people, 2000+ people 
+  applied, and you've been chosen to the part of the 100 people select cause your
+  answer stood out to us.
 </p>
 
-<ul style="padding-left:20px; line-height:1.8;">
-  <li><strong>Original Tuition:</strong> ₦83,659</li>
-  <li><strong>Paid Scholarship Fee:</strong> ₦62,744</li>
-  <li><strong>Expected Fee:</strong> ₦20,915</li>
-</ul>
+<p>
+As part of our mission to accelerate serious talent, we have waived 50% of your
+tuition fee.
+</p>
 
 <div style="text-align:center; margin:30px 0;">
   <a href="https://designdojoo.com/sales"
@@ -261,8 +261,7 @@ export default async function handler(req, res) {
 
 <p>
   <strong>Secure Your Seat:</strong>
-  This exclusive rate is reserved for Aligntraits community members
-  and expires in <strong>72 hours.</strong>
+  Since we have limited spots for this cohort, this scholarship offer is valid for<strong>72 hours.</strong>
 </p>
 
 <p>
