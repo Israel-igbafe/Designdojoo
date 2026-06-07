@@ -275,13 +275,13 @@ tuition fee.
 
 <p>
   <strong>Mr. A. O. Samuel.</strong><br/>
-  Designdojoo’s Principal
+  Designdojoo’s Director
 </p>
 
 <br/>
 
 <p style="font-size:12px; color:#999;">
-  Design Dojo Institute • Lagos, Nigeria<br/>
+  DesignDojoo Institute • Lagos, Nigeria<br/>
   Admission ID: #JD-2024-892 • Valid until Month 30, 2024
 </p>
 
