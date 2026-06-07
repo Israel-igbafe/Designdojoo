@@ -186,9 +186,34 @@ export default async function handler(req, res) {
       year: "numeric",
     }).format(new Date());
 
+    // Pre-fetch sequence numbers for all pending applications so each gets a
+    // unique ascending admission ID based on their row order in the table.
+    // We count how many applications were created before each user's created_at
+    // to derive a stable 1-based sequence number.
+    const sequenceMap = new Map();
+    for (const user of pendingApplications) {
+      const { count } = await supabase
+        .from("applications")
+        .select("id", { count: "exact", head: true })
+        .lte("created_at", user.created_at);
+      sequenceMap.set(user.id, count ?? 1);
+    }
+
     for (const user of pendingApplications) {
       const recipientName = user.full_name || "there";
       const registrationName = user.full_name || user.email;
+
+      // Unique admission ID — ascending sequence from DB count
+      const createdAt = new Date(user.created_at || Date.now());
+      const admYear = createdAt.getFullYear();
+      const seqNum = sequenceMap.get(user.id) ?? 1;
+      const admissionId = `#JD-${admYear}-${String(seqNum).padStart(3, "0")}`;
+
+      // Valid for 2 days from the user's registration date
+      const validUntil = new Date(createdAt.getTime() + 2 * 24 * 60 * 60 * 1000);
+      const validUntilStr = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit", month: "long", year: "numeric",
+      }).format(validUntil);
 
       try {
         const { data, error: resendError } = await resend.emails.send({
@@ -233,7 +258,7 @@ export default async function handler(req, res) {
 
 <p>
   Congratulations! You've been selected from a handful of people, 2000+ people 
-  applied, and you've been chosen to the part of the 100 people selected cause your
+  applied, and you've been chosen to the part of the 100 people select cause your
   answer stood out to us.
 </p>
 
@@ -283,7 +308,7 @@ tuition fee.
 
 <p style="font-size:12px; color:#999;">
   DesignDojoo Institute • Lagos, Nigeria<br/>
-  Admission ID: #JD-2024-892 • Valid until Month 30, 2024
+  Admission ID: ${admissionId} • Valid until ${validUntilStr}
 </p>
 
 </div>
