@@ -233,7 +233,7 @@ export default async function handler(req, res) {
 
 <p>
   Congratulations! You've been selected from a handful of people, 2000+ people 
-  applied, and you've been chosen to the part of the 100 people select cause your
+  applied, and you've been chosen to the part of the 100 people selected cause your
   answer stood out to us.
 </p>
 
