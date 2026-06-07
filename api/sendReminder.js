@@ -268,7 +268,7 @@ tuition fee.
 </p>
 
 <div style="text-align:center; margin:30px 0;">
-  <a href="https://designdojoo.com/sales"
+  <a href="https://designdojoo.com/sales?name=${encodeURIComponent(recipientName.trim().split(/\s+/)[0])}"
   style="
     background:#e50914;
     color:#ffffff;
