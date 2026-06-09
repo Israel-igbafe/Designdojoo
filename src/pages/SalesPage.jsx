@@ -57,7 +57,7 @@ function SessionRow({ day, title, subtitle, track, Icon }) {
   );
 }
 
-/* ─── SPLIT SESSION ROW (for weeks with 2-col days) ──────── */
+/* ─── SPLIT SESSION ROW ───────────────────────────────────── */
 function SplitWeekContent({ leftSessions, rightSessions }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-800">
@@ -117,22 +117,198 @@ function useCountdown(targetDate) {
   return time;
 }
 
+/* ─── ENROLLMENT MODAL ────────────────────────────────────── */
+function EnrollmentModal({ plan, onClose }) {
+  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.phone) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    setError("");
+    setLoading(true);
+
+    const PaystackPop = (await import("@paystack/inline-js")).default;
+    const handler = new PaystackPop();
+
+    handler.newTransaction({
+      key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
+      email: form.email,
+      amount: plan.amount * 100, // Paystack uses kobo
+      currency: "NGN",
+      metadata: {
+        custom_fields: [
+          { display_name: "Name", variable_name: "name", value: form.name },
+          { display_name: "Phone", variable_name: "phone", value: form.phone },
+          { display_name: "Plan", variable_name: "plan", value: plan.name },
+        ],
+      },
+      onSuccess: async (transaction) => {
+        try {
+          await fetch("/api/orders/enroll", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: form.name,
+              email: form.email,
+              phone: form.phone,
+              plan_name: plan.name,
+              amount: plan.amount,
+              paystack_reference: transaction.reference,
+            }),
+          });
+        } catch (_) {
+          // fail silently — payment already succeeded
+        }
+        onClose({ success: true, name: form.name, plan: plan.name });
+      },
+      onCancel: () => {
+        setLoading(false);
+      },
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4">
+      <div className="bg-gray-950 border border-gray-800 rounded-2xl w-full max-w-md p-6 sm:p-8 relative">
+        {/* Close */}
+        <button
+          onClick={() => onClose(null)}
+          className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors text-xl"
+        >✕</button>
+
+        {/* Header */}
+        <div className="mb-6">
+          <span className="text-xs text-red-500 font-semibold uppercase tracking-widest">Enrollment</span>
+          <h3 className="text-xl font-bold text-white mt-1">{plan.name}</h3>
+          <p className="text-gray-400 text-sm mt-1">
+            ₦{plan.amount.toLocaleString()}
+            <span className="line-through text-gray-600 ml-2">₦{plan.original.toLocaleString()}</span>
+            <span className="text-red-400 ml-2 text-xs">50% scholarship applied</span>
+          </p>
+        </div>
+
+        {/* Form */}
+        <div className="space-y-4">
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Full Name</label>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="e.g. Temi Adeyemi"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-red-500 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Email Address</label>
+            <input
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="e.g. temi@gmail.com"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-red-500 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Phone Number</label>
+            <input
+              name="phone"
+              type="tel"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="e.g. 08012345678"
+              className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-red-500 transition-colors"
+            />
+          </div>
+
+          {error && <p className="text-red-400 text-xs">{error}</p>}
+
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors mt-2"
+          >
+            {loading ? "Opening payment..." : "Proceed to Payment →"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── SUCCESS SCREEN ──────────────────────────────────────── */
+function SuccessScreen({ name, plan }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black px-4">
+      <div className="text-center max-w-lg mx-auto">
+        {/* Animated checkmark */}
+        <div className="w-20 h-20 rounded-full border-2 border-red-500 flex items-center justify-center mx-auto mb-8 relative">
+          <svg className="w-10 h-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          {/* Pulse ring */}
+          <div className="absolute inset-0 rounded-full border border-red-500 opacity-30 animate-ping"></div>
+        </div>
+
+        {/* Logo */}
+        <div className="flex items-center justify-center gap-2 mb-8">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70.76 40.38" className="h-7 w-auto">
+            <path fill="#ffffff" d="M38.2,5.85C42.08,1.73,47.86.47,53.29.68L69.6.06l1.16,0V40.28c-7,.15-13.79.1-20.78,0A20.31,20.31,0,0,1,33,30.1c-3.79-5.39-.91-13.3-6.14-17.76-5-4.18-12.08-2.16-18.15-2.52L9.83,8.68v23c0,.14-1.06-1.14-1.06-1.11l10,.6a11.73,11.73,0,0,0,9.15-2.71c-1.56,2.64-6,4-9.14,3.94-.47,0-11,.52-11.2.5V7.53c5.29.16,10.83-.65,16.1.52a12.63,12.63,0,0,1,9,12.1A19.24,19.24,0,0,0,35,29a18,18,0,0,0,15.11,9.07c6.42,0,13.1.09,19.48,0l-1.08,1.14V1.2s1.19,1.17,1.13,1.15L53.32,1.83c-5.5-.57-10.89.2-15.12,4Z"/>
+            <path fill="#b41f24" d="M32.55,34.53c-3.88,4.12-9.65,5.38-15.08,5.17l-16.31.62L0,40.35V.1C7,0,13.79,0,20.78.05a20.32,20.32,0,0,1,17,10.23c3.78,5.39.9,13.3,6.13,17.76,5,4.18,12.08,2.16,18.15,2.52L60.93,31.7v-23c0-.14,1.06,1.14,1.06,1.11L52,9.19a11.76,11.76,0,0,0-9.2,2.68A12.4,12.4,0,0,1,52,8c.45,0,11.06-.56,11.19-.54V32.84c-5.28-.15-10.83.66-16.1-.51a12.63,12.63,0,0,1-9-12.1,19.13,19.13,0,0,0-2.37-8.83A18,18,0,0,0,20.68,2.33c-6.41,0-13.09-.09-19.48,0L2.29,1.22v38S1.1,38,1.16,38l16.28.52c5.49.57,10.89-.2,15.11-4Z"/>
+          </svg>
+          <span className="text-white font-bold text-lg tracking-tight">DesignDojoo</span>
+        </div>
+
+        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+          You're in, <span className="text-red-500">{name}.</span>
+        </h1>
+        <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-2">
+          Your enrollment for <span className="text-white font-medium">{plan}</span> is confirmed.
+        </p>
+        <p className="text-gray-500 text-sm leading-relaxed mb-10">
+          Check your email for next steps. Welcome to the dojo.
+        </p>
+
+        {/* Divider */}
+        <div className="border-t border-gray-800 pt-8">
+          <p className="text-xs text-gray-600 uppercase tracking-widest mb-4">What happens next</p>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            {[
+              { step: "01", label: "Check your email for onboarding details" },
+              { step: "02", label: "Join the DesignDojoo community group" },
+              { step: "03", label: "Show up on Day 1 ready to build" },
+            ].map(({ step, label }) => (
+              <div key={step} className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                <p className="text-red-500 font-bold text-lg mb-2">{step}</p>
+                <p className="text-gray-400 text-xs leading-relaxed">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── MAIN COMPONENT ──────────────────────────────────────── */
 function SalesPage() {
-  // Read the user's name from the URL: /sales?name=Alex
-  // Falls back to "Chief" if no name param is present.
   const [userName] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const raw = params.get("name") || "";
-    // Capitalise first letter of each word, strip any unsafe characters
     return raw
       ? raw.replace(/[^a-zA-Z\s'-]/g, "").trim().replace(/\b\w/g, (c) => c.toUpperCase()) || "Chief"
       : "Chief";
   });
 
-  // Persist deadline in localStorage — clock starts on first visit (email link click)
-  // and survives page refreshes. Keyed per user so two users on the same browser
-  // don't share a deadline.
   const [target] = useState(() => {
     const KEY = `designdojoo_deadline_${userName}`;
     const stored = localStorage.getItem(KEY);
@@ -141,14 +317,38 @@ function SalesPage() {
     localStorage.setItem(KEY, String(deadline));
     return deadline;
   });
-  const { hours, minutes, seconds } = useCountdown(target);
 
+  const { hours, minutes, seconds } = useCountdown(target);
   const pad = (n) => String(n).padStart(2, "0");
+
+  const [activePlan, setActivePlan] = useState(null);
+  const [successData, setSuccessData] = useState(null);
+
+  const plans = [
+    { name: "Standard Bootcamp",           amount: 41829, original: 82658  },
+    { name: "Agency Placement",            amount: 49829, original: 99658  },
+    { name: "Mentorship + Agency Placement", amount: 65829, original: 131658 },
+  ];
+
+  const handleModalClose = (result) => {
+    setActivePlan(null);
+    if (result?.success) {
+      setSuccessData({ name: result.name, plan: result.plan });
+    }
+  };
+
+  if (successData) {
+    return <SuccessScreen name={successData.name} plan={successData.plan} />;
+  }
 
   return (
     <main className="bg-black min-h-screen text-white">
 
-      {/* Sales page navbar — logo only, black background */}
+      {activePlan && (
+        <EnrollmentModal plan={activePlan} onClose={handleModalClose} />
+      )}
+
+      {/* NAVBAR */}
       <nav className="bg-black px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70.76 40.38" className="h-8 w-auto">
@@ -191,8 +391,6 @@ function SalesPage() {
         <p className="text-gray-400 text-center mt-3 max-w-xl mx-auto leading-relaxed text-sm sm:text-base">
           An 8-week structured journey from design fundamentals to portfolio-ready work and paid gigs.
         </p>
-
-        {/* TRACK INDICATOR */}
         <div className="border border-gray-800 rounded-full px-5 py-3 flex flex-wrap items-center gap-4 text-sm my-8 bg-gray-950">
           <div className="flex items-center gap-2 text-red-500 font-semibold">
             <div className="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -204,14 +402,12 @@ function SalesPage() {
           </div>
         </div>
 
-        {/* WEEK 1 */}
         <WeekAccordion weekNum="1" level="Beginner" phase="Foundation" defaultOpen>
           <SessionRow day={1} title="Onboarding" subtitle="Design Thinking Process: Empathize → Define → Ideate → Prototype → Test" track="JOINT" Icon={FiUsers} />
           <SessionRow day={2} title="Human-Centered Design" subtitle="Qualitative user interviews, focus groups" track="JOINT" Icon={FiBookOpen} />
           <SessionRow day={3} title="Fundamental Design Principles" subtitle="Design shapes and basics" track="JOINT" Icon={HiOutlineLightBulb} />
         </WeekAccordion>
 
-        {/* WEEK 2 */}
         <WeekAccordion weekNum="2" level="Beginner" phase="Core Skills">
           <SplitWeekContent
             leftSessions={[
@@ -227,28 +423,24 @@ function SalesPage() {
           />
         </WeekAccordion>
 
-        {/* WEEK 3 */}
         <WeekAccordion weekNum="3" level="Intermediate" phase="Build Phase">
           <SessionRow day={1} title="Project 1 Pairing" subtitle="E-commerce / Business Portfolio" track="JOINT" Icon={HiOutlineRocketLaunch} />
           <SessionRow day={2} title="Project 1 Mentor Review" track="JOINT" Icon={FiStar} />
           <SessionRow day={3} title="Showcase / Feedback" track="JOINT" Icon={HiOutlineTrophy} />
         </WeekAccordion>
 
-        {/* WEEK 4 */}
         <WeekAccordion weekNum="4" level="Intermediate" phase="Build Phase">
           <SessionRow day={1} title="Project 2 Pairing" subtitle="EduTech / Prize Money" track="JOINT" Icon={HiOutlineRocketLaunch} />
           <SessionRow day={2} title="Project 2 Mentor Review" track="JOINT" Icon={FiStar} />
           <SessionRow day={3} title="Showcase / Feedback" track="JOINT" Icon={HiOutlineTrophy} />
         </WeekAccordion>
 
-        {/* WEEK 5 */}
         <WeekAccordion weekNum="5" level="Professional" phase="Build Phase">
           <SessionRow day={1} title="Project 3 Re-Pairing" subtitle="Fin-Tech / Prize Money" track="JOINT" Icon={HiOutlineRocketLaunch} />
           <SessionRow day={2} title="Project 1 Mentor Review" track="JOINT" Icon={FiStar} />
           <SessionRow day={3} title="Showcase / Feedback" track="JOINT" Icon={HiOutlineTrophy} />
         </WeekAccordion>
 
-        {/* WEEK 6 */}
         <WeekAccordion weekNum="6" level="Professional" phase="Personal Brand">
           <SplitWeekContent
             leftSessions={[
@@ -264,20 +456,17 @@ function SalesPage() {
           />
         </WeekAccordion>
 
-        {/* WEEK 7 */}
         <WeekAccordion weekNum="7" level="Executive" phase="Career Prep">
           <SessionRow day={1} title="Crafting a High-Impact CV" track="JOINT" Icon={HiOutlineDocumentText} />
           <SessionRow day={2} title="The Perfect Portfolio" track="JOINT" Icon={HiOutlineBriefcase} />
           <SessionRow day={3} title="Interview Preparation" track="JOINT" Icon={HiOutlineUserGroup} />
         </WeekAccordion>
 
-        {/* WEEK 8 */}
         <WeekAccordion weekNum="8" level="Executive" phase="Final Milestone">
           <SessionRow day={1} title="Presentation of Personal Projects" track="JOINT" Icon={HiOutlineRocketLaunch} />
           <SessionRow day={2} title="Freelancing & Hunting for Paid Gigs" track="JOINT" Icon={HiOutlineClipboardList} />
           <SessionRow day={3} title="Client Acquisition & DesignDojoo Agency Integration" track="JOINT" Icon={HiOutlineBriefcase} />
         </WeekAccordion>
-
       </section>
 
       {/* FINAL MILESTONE CARD */}
@@ -287,9 +476,7 @@ function SalesPage() {
             <FiAward />
             <span className="font-semibold tracking-wide uppercase text-xs">Final Milestone</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
-            Presentation of Personal Project
-          </h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Presentation of Personal Project</h3>
           <div className="flex justify-center gap-3 mt-6 flex-wrap">
             <span className="text-sm bg-gray-100 text-gray-700 px-4 py-2 rounded-full">Look for paid gigs</span>
             <span className="text-sm bg-gray-100 text-gray-700 px-4 py-2 rounded-full">Client Acquisition</span>
@@ -313,21 +500,17 @@ function SalesPage() {
         </div>
       </section>
 
-      {/* COUNTDOWN / SEAT RESERVED */}
+      {/* COUNTDOWN */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
         <div className="flex justify-center mb-4">
           <div className="w-10 h-10 rounded-full bg-red-900 flex items-center justify-center">
             <span className="text-red-400 text-lg">⏱</span>
           </div>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-white">
-          Complete Your Enrollment Before Time Runs Out
-        </h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-white">Complete Your Enrollment Before Time Runs Out</h2>
         <p className="text-gray-400 mt-2 text-sm">
           Before your seat is reversed, <span className="text-red-500 font-medium">{userName}.</span>
         </p>
-
-        {/* TIMER DISPLAY */}
         <div className="flex justify-center gap-3 sm:gap-4 mt-8">
           {[[pad(hours), "Hours"], [pad(minutes), "Minutes"], [pad(seconds), "Seconds"]].map(([val, label]) => (
             <div key={label} className="flex flex-col items-center">
@@ -338,27 +521,20 @@ function SalesPage() {
             </div>
           ))}
         </div>
-
-        <p className="text-xs text-red-500 mt-5">
-          ● Limited spots available — Secure yours now
-        </p>
+        <p className="text-xs text-red-500 mt-5">● Limited spots available — Secure yours now</p>
       </section>
 
-      {/* SEAT RESERVED HEADING */}
+      {/* SEAT RESERVED */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-10 text-center">
         <h2 className="text-2xl sm:text-3xl font-bold text-white">
-          Your Seat is Reserved,{" "}
-          <span className="text-red-500">{userName}.</span>
+          Your Seat is Reserved, <span className="text-red-500">{userName}.</span>
         </h2>
-        <p className="text-gray-400 mt-2 text-sm">
-          Your scholarship has been applied. Complete your enrollment before the timer expires.
-        </p>
+        <p className="text-gray-400 mt-2 text-sm">Your scholarship has been applied. Complete your enrollment before the timer expires.</p>
       </section>
 
       {/* PRICING */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
         <div className="border border-gray-800 rounded-xl overflow-hidden bg-gray-950">
-
           <div className="bg-gray-900 text-white px-4 sm:px-6 py-4 font-semibold border-l-4 border-red-500 text-sm sm:text-base">
             DesignDojoo Product Experience
           </div>
@@ -377,8 +553,11 @@ function SalesPage() {
               </div>
               <p className="text-xs text-red-400 mt-1">50% Scholarship Applied</p>
             </div>
-            <button className="flex items-center justify-center gap-2 bg-transparent border border-gray-600 text-white px-5 py-2 rounded-lg text-sm hover:bg-gray-800 transition-colors w-full sm:w-auto">
-              Apply direct <span>→</span>
+            <button
+              onClick={() => setActivePlan(plans[0])}
+              className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors w-full sm:w-auto"
+            >
+              Enroll now <span>→</span>
             </button>
           </div>
 
@@ -396,8 +575,11 @@ function SalesPage() {
               </div>
               <p className="text-xs text-red-400 mt-1">50% Scholarship Applied • Includes ₦40,000 Placement Fee</p>
             </div>
-            <button className="flex items-center justify-center gap-2 bg-transparent border border-gray-600 text-white px-5 py-2 rounded-lg text-sm hover:bg-gray-800 transition-colors w-full sm:w-auto">
-              Apply direct <span>→</span>
+            <button
+              onClick={() => setActivePlan(plans[1])}
+              className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors w-full sm:w-auto"
+            >
+              Enroll now <span>→</span>
             </button>
           </div>
 
@@ -420,11 +602,13 @@ function SalesPage() {
               </div>
               <p className="text-xs text-red-400 mt-1">50% Scholarship Applied • Includes Placement + Mentorship Fees</p>
             </div>
-            <button className="flex items-center justify-center gap-2 bg-transparent border border-gray-600 text-white px-5 py-2 rounded-lg text-sm hover:bg-gray-800 transition-colors w-full sm:w-auto">
-              Apply direct <span>→</span>
+            <button
+              onClick={() => setActivePlan(plans[2])}
+              className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors w-full sm:w-auto"
+            >
+              Enroll now <span>→</span>
             </button>
           </div>
-
         </div>
       </section>
 
@@ -437,7 +621,6 @@ function SalesPage() {
       {/* CERTIFICATE + TESTIMONIALS */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
         <img src="/images/certificates/certificates-5.svg" className="rounded-xl shadow-sm border border-gray-800 w-full" />
-
         <div className="space-y-4">
           {[
             { initials: "TA", quote: "\"I shipped my first product in week 5. DesignDojoo is the real deal.\"", name: "Temi A.", role: "UI Designer, Flutterwave" },
@@ -446,9 +629,7 @@ function SalesPage() {
           ].map(({ initials, quote, name, role }) => (
             <div key={initials} className="bg-gray-950 border border-gray-800 rounded-xl p-4 sm:p-6">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-sm font-semibold text-gray-300 shrink-0">
-                  {initials}
-                </div>
+                <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-sm font-semibold text-gray-300 shrink-0">{initials}</div>
                 <div>
                   <div className="text-red-500 text-sm mb-2">★★★★★</div>
                   <p className="text-gray-300 text-sm leading-relaxed">{quote}</p>
@@ -462,11 +643,9 @@ function SalesPage() {
         </div>
       </section>
 
-      {/* ── INLINE FOOTER (white, matches Figma) ─────────────── */}
+      {/* FOOTER */}
       <footer className="bg-white text-gray-900">
         <div className="max-w-6xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-3 gap-10">
-
-          {/* LEFT — logo + tagline + socials */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73.12 41.73" className="h-8 w-auto">
@@ -478,69 +657,40 @@ function SalesPage() {
             <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
               Transforming aspiring designers and product managers into industry-ready professionals through accountability, real projects, and career support.
             </p>
-            {/* Social icons */}
             <div className="flex items-center gap-4 pt-1">
-              {/* Instagram */}
               <a href="#" aria-label="Instagram" className="text-gray-500 hover:text-gray-900 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                  <circle cx="12" cy="12" r="4"/>
-                  <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
               </a>
-              {/* Twitter/X */}
               <a href="#" aria-label="Twitter" className="text-gray-500 hover:text-gray-900 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               </a>
-              {/* LinkedIn */}
               <a href="#" aria-label="LinkedIn" className="text-gray-500 hover:text-gray-900 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/>
-                  <circle cx="4" cy="4" r="2"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
               </a>
-              {/* Email */}
               <a href="#" aria-label="Email" className="text-gray-500 hover:text-gray-900 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0l-9.75 6.75L2.25 6.75"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0l-9.75 6.75L2.25 6.75"/></svg>
               </a>
             </div>
           </div>
-
-          {/* MIDDLE — Program links */}
           <div>
             <h4 className="font-bold text-gray-900 mb-4 text-sm tracking-wide uppercase">Program</h4>
             <ul className="space-y-3">
               {["UI Design Track", "PM Track", "Curriculum", "Scholarship"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{item}</a>
-                </li>
+                <li key={item}><a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{item}</a></li>
               ))}
             </ul>
           </div>
-
-          {/* RIGHT — Resources links */}
           <div>
             <h4 className="font-bold text-gray-900 mb-4 text-sm tracking-wide uppercase">Resources</h4>
             <ul className="space-y-3">
               {["Blog", "FAQ", "Contact Us", "Privacy Policy"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{item}</a>
-                </li>
+                <li key={item}><a href="#" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{item}</a></li>
               ))}
             </ul>
           </div>
-
         </div>
-
-        {/* Bottom bar */}
         <div className="border-t border-gray-200">
-          <p className="text-center text-xs text-gray-400 py-5">
-            © 2025 DesignDojoo. All rights reserved.
-          </p>
+          <p className="text-center text-xs text-gray-400 py-5">© 2025 DesignDojoo. All rights reserved.</p>
         </div>
       </footer>
 
