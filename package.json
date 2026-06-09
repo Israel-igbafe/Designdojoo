@@ -14,6 +14,7 @@
     "smoke:backend": "node --env-file=.env.backend.example --test \"api/_tests/smoke.test.js\""
   },
   "dependencies": {
+    "@paystack/inline-js": "^2.22.9",
     "@supabase/supabase-js": "^2.97.0",
     "lucide-react": "^0.562.0",
     "react": "^19.2.0",
