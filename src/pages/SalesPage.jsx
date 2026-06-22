@@ -325,7 +325,7 @@ function SalesPage() {
   const [successData, setSuccessData] = useState(null);
 
   const plans = [
-    { name: "Standard Bootcamp",           amount: 41829, original: 82658  },
+    { name: "Standard Bootcamp",           amount: 100, original: 82658  },
     { name: "Agency Placement",            amount: 49829, original: 99658  },
     { name: "Mentorship + Agency Placement", amount: 65829, original: 131658 },
   ];
