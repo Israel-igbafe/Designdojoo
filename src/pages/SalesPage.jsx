@@ -548,7 +548,7 @@ function SalesPage() {
                   <FiHome className="text-sm" /> Tier 1
                 </span>
                 <span>8 Weeks</span>
-                <span className="font-medium text-white">₦41829</span>
+                <span className="font-medium text-white">₦41,829</span>
                 <span className="line-through text-gray-600">₦82,658</span>
               </div>
               <p className="text-xs text-red-400 mt-1">50% Scholarship Applied</p>
